@@ -67,6 +67,14 @@ public class ContentPanel extends JPanel {
 			}
 		});
 		popupMenu.add(renameItem);
+		JMenuItem reminderItem = new JMenuItem("Add To Reminder");
+		reminderItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 待实现
+			}
+		});
+		popupMenu.add(reminderItem);
 		JButton button = new JButton("...");
 		button.addActionListener(new ActionListener() {
 			@Override
