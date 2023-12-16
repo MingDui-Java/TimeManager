@@ -52,8 +52,8 @@ public class FileIOUtil {
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			// 添加文件名后缀
-			if (!file.getName().toLowerCase().endsWith(".tmnode")) {
-				file = new File(file.getPath() + ".tmnode");
+			if (!file.getName().toLowerCase().endsWith(".tmnote")) {
+				file = new File(file.getPath() + ".tmnote");
 			}
 			return file;
 		} else {

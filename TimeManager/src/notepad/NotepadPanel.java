@@ -40,9 +40,13 @@ public class NotepadPanel extends JPanel {
 		repaint();
 	}
 
-	public void openFile(FileInfo fileInfo) {
+	public boolean openFile(FileInfo fileInfo) {
+		if (FileManager.getInstance().findFileInfo(fileInfo.getFile()) == null) {
+			return false;
+		}
 		showEditor();
 		FileEditor.getInstance().openfile(fileInfo);
+		return true;
 	}
 
 	public static NotepadPanel getInstance() {
@@ -52,17 +56,23 @@ public class NotepadPanel extends JPanel {
 		return instance;
 	}
 
-	public FileInfo selectFile() {
+	public FileInfo selectFile() { // cancel error
 		JFileChooser fileChooser = new JFileChooser();
 		// 设置文件过滤器
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("TMNote 文件", "tmnote");
 		fileChooser.setFileFilter(filter);
 		// 设置只显示目录
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		fileChooser.setCurrentDirectory(new File("./Note"));
 		int result = fileChooser.showOpenDialog(parentFrame);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
-			return FileManager.getInstance().findFileInfo(selectedFile);
+			if (!selectedFile.exists() || !selectedFile.getName().toLowerCase().endsWith(".tmnote")) {
+				return null;
+			} else {
+				FileManager.getInstance().importFile(selectedFile);
+				return FileManager.getInstance().findFileInfo(selectedFile);
+			}
 		} else {
 			return null;
 		}

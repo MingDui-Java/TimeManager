@@ -59,4 +59,8 @@ public class FileInfo implements Serializable {
 	public void delete() {
 		file.delete();
 	}
+
+	public File getFile() {
+		return file;
+	}
 }
