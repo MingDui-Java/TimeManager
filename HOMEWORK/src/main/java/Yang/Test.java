@@ -5,16 +5,16 @@
 //import java.io.*;
 //import java.util.*;
 //
-//public class CalendarPanel extends JPanel implements Serializable {
+//public class MonthPanel extends JPanel implements Serializable {
 //    private final JLabel monthLabel;
 //
 //    private final JPanel calendarPanel;
 //    private final Calendar currentCalendar;
 //    private final Calendar currentCalendarCopy;
 //    public Map<Integer, String> todoMap; // 使用 Map 将待办事项与日期关联
-//    private final Map<Integer, Map<Integer, Map<Integer, SecondPanel>>> secondPanelMapByYear;
+//    private final Map<Integer, Map<Integer, Map<Integer, DayPanel>>> secondPanelMapByYear;
 //    private static final String TODO_FILE = "todo.ser";
-//    public CalendarPanel() {
+//    public MonthPanel() {
 //        setLayout(new BorderLayout());
 //        monthLabel = new JLabel("", JLabel.CENTER);
 //        JButton previousButton = new JButton("<<");
@@ -42,10 +42,10 @@
 //
 //        secondPanelMapByYear = new HashMap<>();
 //        for (int year = currentCalendar.get(Calendar.YEAR) - 1; year <= currentCalendar.get(Calendar.YEAR) + 1; year++) {
-//            Map<Integer, Map<Integer, SecondPanel>> monthMap = new HashMap<>();
+//            Map<Integer, Map<Integer, DayPanel>> monthMap = new HashMap<>();
 //            secondPanelMapByYear.put(year, monthMap);
 //            for (int month = 0; month < 12; month++) {
-//                Map<Integer, SecondPanel> dayMap = new HashMap<>();
+//                Map<Integer, DayPanel> dayMap = new HashMap<>();
 //                monthMap.put(month, dayMap);
 //            }
 //        }
@@ -111,14 +111,14 @@
 //        }
 //
 //        for (int i = 1; i <= daysInMonth; i++) {
-//            Map<Integer, SecondPanel> dayMap = secondPanelMapByYear
+//            Map<Integer, DayPanel> dayMap = secondPanelMapByYear
 //                    .get(currentCalendarCopy.get(Calendar.YEAR))
 //                    .get(currentCalendarCopy.get(Calendar.MONTH));
-//            SecondPanel panelForDay = dayMap.getOrDefault(i, null);
+//            DayPanel panelForDay = dayMap.getOrDefault(i, null);
 //
 //            if (panelForDay == null) {
-//                // 如果没有对应的 SecondPanel，则创建一个并放入 secondPanelMapByYear
-//                panelForDay = new SecondPanel("您在当天还没有代办，点击右上角 + 号创建一个吧", 1);
+//                // 如果没有对应的 DayPanel，则创建一个并放入 secondPanelMapByYear
+//                panelForDay = new DayPanel("您在当天还没有代办，点击右上角 + 号创建一个吧", 1);
 //                dayMap.put(i, panelForDay);
 //            }
 //            int buttonNumber  = panelForDay.getList().size();
@@ -130,7 +130,7 @@
 //                    String todo = todoMap.get(i);
 //                    dayButton.setToolTipText(todo); // 设置待办事项作为提示文本显示
 //
-//                    // 如果当前日期与待办事项日期匹配，将待办事项传递给对应的 SecondPanel
+//                    // 如果当前日期与待办事项日期匹配，将待办事项传递给对应的 DayPanel
 //                    Calendar current = Calendar.getInstance();
 //                    current.set(Calendar.YEAR, currentCalendarCopy.get(Calendar.YEAR));
 //                    current.set(Calendar.MONTH, currentCalendarCopy.get(Calendar.MONTH));
@@ -140,7 +140,7 @@
 //                    if (current.get(Calendar.YEAR) == now.get(Calendar.YEAR) &&
 //                            current.get(Calendar.MONTH) == now.get(Calendar.MONTH) &&
 //                            current.get(Calendar.DAY_OF_MONTH) == now.get(Calendar.DAY_OF_MONTH)) {
-//                        SecondPanel panelForCurrentDay = getSecondPanelForCurrentDay(current);
+//                        DayPanel panelForCurrentDay = getSecondPanelForCurrentDay(current);
 //                        if (panelForCurrentDay != null) {
 //                            panelForCurrentDay.updateTodoList(todo); // 更新待办事项列表
 //                        }
@@ -152,13 +152,13 @@
 //                dayButton.setToolTipText(todo); // 将待办事项作为提示文本显示
 //            }
 //            calendarPanel.add(dayButton);
-//            SecondPanel finalPanelForDay = panelForDay;
+//            DayPanel finalPanelForDay = panelForDay;
 //            dayButton.addActionListener(new ActionListener() {
 //                public void actionPerformed(ActionEvent e) {
 //                    JPanel container = (JPanel) getParent();
-//                    container.add(finalPanelForDay, "SecondPanel");
+//                    container.add(finalPanelForDay, "DayPanel");
 //                    CardLayout cardLayout = (CardLayout) container.getLayout();
-//                    cardLayout.show(container, "SecondPanel");
+//                    cardLayout.show(container, "DayPanel");
 //                }
 //            });
 //        }
@@ -177,22 +177,22 @@
 //        calendarPanel.revalidate();
 //        calendarPanel.repaint();
 //    }
-//    private SecondPanel getSecondPanelForCurrentDay(Calendar current) {
-//        // 假设有一个方法来判断是否存在对应日期的 SecondPanel
+//    private DayPanel getSecondPanelForCurrentDay(Calendar current) {
+//        // 假设有一个方法来判断是否存在对应日期的 DayPanel
 //        // 这里是一种示例方法，您需要根据实际情况编写此方法
-//        // 例如，您可以使用 Map 或其他数据结构来存储日期和对应的 SecondPanel
+//        // 例如，您可以使用 Map 或其他数据结构来存储日期和对应的 DayPanel
 //
-//        // 返回与当前日期对应的 SecondPanel，如果不存在则返回 null
-//        // 这里需要根据实际逻辑来查找或创建 SecondPanel
-//        return null; // 这里需要您编写逻辑来返回对应日期的 SecondPanel
+//        // 返回与当前日期对应的 DayPanel，如果不存在则返回 null
+//        // 这里需要根据实际逻辑来查找或创建 DayPanel
+//        return null; // 这里需要您编写逻辑来返回对应日期的 DayPanel
 //    }
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame("Java Calendar");
 //        frame.setSize(400, 300);
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        CalendarPanel calendarPanel = new CalendarPanel();
+//        MonthPanel calendarPanel = new MonthPanel();
 //        JPanel container = new JPanel(new CardLayout());
-//        container.add(calendarPanel,"CalendarPanel");
+//        container.add(calendarPanel,"MonthPanel");
 //        calendarPanel.addComponentListener(new ComponentAdapter() {
 //            @Override
 //            public void componentShown(ComponentEvent e) {

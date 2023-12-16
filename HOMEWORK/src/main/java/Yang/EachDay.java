@@ -9,12 +9,12 @@ import java.io.Serializable;
  */
 public class EachDay extends JPanel implements Serializable {
     protected JButton dayButton;
-    protected SecondPanel secondPanel;
+    protected DayPanel dayPanel;
     protected int num;
     protected int day;
-    public EachDay(JButton dayButton, SecondPanel secondPanel, int num, int day){
+    public EachDay(JButton dayButton, DayPanel dayPanel, int num, int day){
         this.dayButton = dayButton;
-        this.secondPanel = secondPanel;
+        this.dayPanel = dayPanel;
         this.num = num;
         this.day = day;
         dayOnShow();
@@ -31,7 +31,7 @@ public class EachDay extends JPanel implements Serializable {
     public JButton getDayButton(){
         return dayButton;
     }
-    public SecondPanel getSecondPanel(){
-        return secondPanel;
+    public DayPanel getSecondPanel(){
+        return dayPanel;
     }
 }
