@@ -5,6 +5,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.io.Serializable;
 
+/**
+ * @author 杨智方
+ */
 // 实现 ActionListener 接口的具名类
 class DownButtonListener implements ActionListener, Serializable {
     private JPanel buttonPanel;

@@ -2,6 +2,9 @@ package Yang;
 import javax.swing.*;
 import java.io.Serializable;
 
+/**
+ * @author 杨智方
+ */
 public class ToDos implements Serializable {
     private boolean finished;
     private JPanel todoPanel;

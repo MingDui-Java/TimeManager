@@ -5,6 +5,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+/**
+ * @author 杨智方
+ */
 public class GetTextField {
     public static JTextField getTextField(String string){
         JTextField textField = new JTextField(15);

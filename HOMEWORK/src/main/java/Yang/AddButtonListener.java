@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * @author 杨智方
+ */
 // 实现 ActionListener 接口的具名类
 class AddButtonListener implements ActionListener, Serializable {
     private JPanel buttonPanel;

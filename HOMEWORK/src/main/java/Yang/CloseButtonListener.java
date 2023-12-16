@@ -5,7 +5,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.io.Serializable;
 
-// 实现 ActionListener 接口的具名类
+/**
+ * @author 杨智方
+ */
 class CloseButtonListener implements ActionListener, Serializable {
     private JPanel buttonPanel;
     private JButton closeButton;

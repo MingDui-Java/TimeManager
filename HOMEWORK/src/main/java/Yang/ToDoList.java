@@ -3,6 +3,9 @@ import javax.swing.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * @author 杨智方
+ */
 public class ToDoList implements Serializable {
     private String name;
     private JPanel bigListPanel;

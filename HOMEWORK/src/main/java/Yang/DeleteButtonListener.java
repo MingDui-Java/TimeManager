@@ -8,7 +8,9 @@ import java.awt.event.FocusEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-// 实现 ActionListener 接口的具名类
+/**
+ * @author 杨智方
+ */
 class DeleteButtonListener implements ActionListener, Serializable {
     private JPanel bigListPanel;
     private JPanel listPanel;

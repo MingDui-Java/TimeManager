@@ -3,6 +3,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.io.Serializable;
 
+/**
+ * @author 杨智方
+ */
 // 实现 ActionListener 接口的具名类
 class SetButtonListener implements ActionListener, Serializable {
     private JPanel listPanel;

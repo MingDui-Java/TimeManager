@@ -4,6 +4,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.Serializable;
 
+/**
+ * @author 杨智方
+ */
 public class EachDay extends JPanel implements Serializable {
     protected JButton dayButton;
     protected SecondPanel secondPanel;
