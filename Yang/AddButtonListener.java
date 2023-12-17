@@ -32,7 +32,7 @@ class AddButtonListener implements ActionListener, Serializable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ArrayList<ToDos> todos = GetTodoButtonPanel.todos;
+        ArrayList<ToDos> todos = ToDoList.toDos;
         JFrame popupFrame = new JFrame("添加待办");
         JPanel popupPanel = new JPanel();
         String DEFAULT_STRING = "请输入待办名称";
@@ -55,8 +55,8 @@ class AddButtonListener implements ActionListener, Serializable {
                                         JLabel tipLabel = new JLabel("已存在相同待办");
                                         tip.add(tipLabel);
                                         tip.setSize(300, 100);
-                                        int x = listPanel.getX() + (listPanel.getWidth() - tip.getWidth()) / 2;
-                                        int y = listPanel.getY() + (listPanel.getHeight() - tip.getHeight()) / 2;
+                                        int x = TodoListPanel.getX() + (TodoListPanel.getWidth() - tip.getWidth()) / 2;
+                                        int y = TodoListPanel.getY() + (TodoListPanel.getHeight() - tip.getHeight()) / 2;
                                         tip.setLocation(x, y);
                                         tip.setVisible(true);
                                         return;
@@ -152,33 +152,50 @@ class StartButtonListener implements ActionListener, Serializable {
         SpinnerModel timeModel = new SpinnerNumberModel(25, 0, 1440, 1);
         JSpinner timeSpinner = new JSpinner(timeModel);
         inputPanel.add(timeSpinner);
-        ArrayList<ToDos> todos = GetTodoButtonPanel.todos;
+        ArrayList<ToDos> todos = ToDoList.toDos;
         // 显示对话框并获取用户输入
         int result = JOptionPane.showConfirmDialog(null, inputPanel, "Enter Task Details", JOptionPane.OK_CANCEL_OPTION);
-//        if (result == JOptionPane.OK_OPTION) {
-//            TodoItem newItem = null;
-//            String title = titleField.getText();
-//            int time = (Integer) timeSpinner.getValue();
-//            JPanel p = (JPanel) buttonPanel.getParent();
-//            for (ToDos toDoItem : todos) {// 寻找对应的JPanel
-//                if (toDoItem.getPanel() == p) {
-//                    newItem = new TodoItem(title, time, toDoItem);
-//                    break;
-//                }
-//            }
+        if (result == JOptionPane.OK_OPTION) {
+            TodoItem newItem = null;
+            String title = titleField.getText();
+            int time = (Integer) timeSpinner.getValue();
+            // 检测是否存在同名任务
+            boolean isDuplicate = false;
+            for (int i = 0; i < TaskPanel.taskModel.getSize(); i++) {
+                TodoItem item = TaskPanel.taskModel.getElementAt(i);
+                if (item != null && item.getTitle().equals(title)) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
 
-            // 将新创建的任务添加到模型中
-//            TaskPanel.taskModel.addElement(newItem);
-//            saveTaskList();
-//        }
+            if (!isDuplicate) {
+                JPanel p = (JPanel) buttonPanel.getParent();
+                for (ToDos toDoItem : todos) {// 寻找对应的JPanel
+                    if(toDoItem.getPanel() == p){
+                        newItem = new TodoItem(title, time, toDoItem);
+                        break;
+                    }
+                }
+
+                // 将新创建的任务添加到模型中
+                TaskPanel.taskModel.addElement(newItem);
+                saveTaskList();
+            } else {
+                // 弹出提示框
+                JOptionPane.showMessageDialog(null, "不能新建同名任务", "错误", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
-//    private static void saveTaskList() {
-//        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("tasks.ser"))) {
-//            oos.writeObject(new ArrayList<TodoItem>(Collections.list(TaskPanel.taskModel.elements())));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private static void saveTaskList() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("tasks.ser"))) {
+            oos.writeObject(new ArrayList<TodoItem>(Collections.list(TaskPanel.taskModel.elements())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
 }
 class FinishButtonListener implements ActionListener,Serializable{
     private ToDos toDos;

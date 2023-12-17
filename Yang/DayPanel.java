@@ -111,6 +111,7 @@ public class DayPanel extends JPanel implements Serializable {
         add(topPanel, BorderLayout.NORTH);
         scrollPane = new JScrollPane(ToDoListPanel); // 把待办集加到scroll中
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(hintPanel, BorderLayout.CENTER);
     }
     public void setScrollPane(JScrollPane scrollPane){
@@ -137,15 +138,18 @@ public class DayPanel extends JPanel implements Serializable {
             }
         }
         ToDoList toDoList1 = new ToDoList();
+
         JPanel bigListPanel = toDoList1.getBigListPanel();
         bigListPanel.setLayout(new BoxLayout(bigListPanel, BoxLayout.Y_AXIS));
-        JPanel smallListPanel = new JPanel();
+
+        JPanel smallListPanel = toDoList1.getSmallListPanel();
         smallListPanel.setLayout(new BoxLayout(smallListPanel,BoxLayout.Y_AXIS));
         smallListPanel.setVisible(true);
-        JPanel listPanel = new JPanel(new BorderLayout());
-        listPanel.setMaximumSize(new Dimension(1700,59));
-        listPanel.setMinimumSize(new Dimension(1700,59));
-        listPanel.setPreferredSize(new Dimension(1700,59));
+
+        JPanel listPanel = toDoList1.getListPanel();
+        listPanel.setMaximumSize(new Dimension(getWidth(),40));//[1]
+        listPanel.setMinimumSize(new Dimension(getWidth(),40));
+        listPanel.setPreferredSize(new Dimension(getWidth(),40));
         toDoList1.setName(textField.getText());
         JLabel userInputLabel = new JLabel(textField.getText());
         userInputLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // 左对齐
@@ -156,6 +160,7 @@ public class DayPanel extends JPanel implements Serializable {
         bigListPanel.add(smallListPanel);
         bigListPanel.setVisible(true);
         list.add(toDoList1);//待办集里加入待办
+        ToDoListPanel.addComponentListener(toDoList1.getSizeHandler());
         ToDoListPanel.add(bigListPanel);
         ToDoListPanel.revalidate();
         ToDoListPanel.repaint();
