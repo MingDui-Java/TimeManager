@@ -45,51 +45,52 @@ class AddButtonListener implements ActionListener, Serializable {
                     JOptionPane.showMessageDialog(popupFrame, "输入不能为空", "提示", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     popupFrame.dispose();
-                    if(todos != null)
-                    for (ToDos toDoItem : todos) {// 判断是否存在相同名称待办
-                        Component[] components = toDoItem.getPanel().getComponents();
-                        for (Component component : components) {
-                            if (component instanceof JLabel label) {
-                                if (textField.getText().equals(label.getText())) {
-                                    JFrame tip = new JFrame("提示");
-                                    JLabel tipLabel = new JLabel("已存在相同待办");
-                                    tip.add(tipLabel);
-                                    tip.setSize(300, 100);
-                                    int x = listPanel.getX() + (listPanel.getWidth() - tip.getWidth()) / 2;
-                                    int y = listPanel.getY() + (listPanel.getHeight() - tip.getHeight()) / 2;
-                                    tip.setLocation(x, y);
-                                    tip.setVisible(true);
-                                    return;
+                    if (todos != null)
+                        for (ToDos toDoItem : todos) {// 判断是否存在相同名称待办
+                            Component[] components = toDoItem.getPanel().getComponents();
+                            for (Component component : components) {
+                                if (component instanceof JLabel label) {
+                                    if (textField.getText().equals(label.getText())) {
+                                        JFrame tip = new JFrame("提示");
+                                        JLabel tipLabel = new JLabel("已存在相同待办");
+                                        tip.add(tipLabel);
+                                        tip.setSize(300, 100);
+                                        int x = listPanel.getX() + (listPanel.getWidth() - tip.getWidth()) / 2;
+                                        int y = listPanel.getY() + (listPanel.getHeight() - tip.getHeight()) / 2;
+                                        tip.setLocation(x, y);
+                                        tip.setVisible(true);
+                                        return;
+                                    }
                                 }
                             }
                         }
-                    }
                     buttonPanel.remove(downButton);
                     buttonPanel.add(closeButton);
                     JPanel TodoPanel = new JPanel(new BorderLayout());
                     JLabel userInputLabel = new JLabel(textField.getText());
-                    ToDos toDoItem = new ToDos(TodoPanel,false,buttonPanel,userInputLabel);
+                    ToDos toDoItem = new ToDos(TodoPanel, false, userInputLabel);
                     Random random = new Random();
                     Color rColor = predefinedColors[random.nextInt(predefinedColors.length)];
                     TodoPanel.setBackground(rColor);
-                    TodoPanel.setMaximumSize(new Dimension(1800, 59));
+                    TodoPanel.setMaximumSize(new Dimension(1700, 59));
                     userInputLabel.setForeground(Color.white);
                     userInputLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // 左对齐
                     TodoPanel.add(userInputLabel, BorderLayout.WEST); // 将名称添加到待办的左侧
 
-                    StartButtonListener startButtonListener = new StartButtonListener(buttonPanel);
+                    JPanel buttonPanel2 = new JPanel(new GridLayout(1, 2));
+
                     JButton startButton = new JButton("开始");
+                    StartButtonListener startButtonListener = new StartButtonListener(buttonPanel2);
                     startButton.addActionListener(startButtonListener);
 
                     FinishButtonListener finishButtonListener = new FinishButtonListener(toDoItem);
                     JButton finishButton = new JButton("完成");
                     finishButton.addActionListener(finishButtonListener);
 
-                    JPanel buttonPanel2 = new JPanel(new GridLayout(1,2));
                     buttonPanel2.add(startButton);
                     buttonPanel2.add(finishButton);
                     TodoPanel.add(buttonPanel2, BorderLayout.EAST); // 将按钮添加到待办的右侧
-                    if(todos!=null)  todos.add(toDoItem);//待办集里加入待办
+                    if (todos != null) todos.add(toDoItem);//待办集里加入待办
                     listPanel.add(TodoPanel);
                     listPanel.revalidate();
                     listPanel.repaint();
@@ -165,8 +166,8 @@ class StartButtonListener implements ActionListener, Serializable {
 //                    break;
 //                }
 //            }
-//
-//            // 将新创建的任务添加到模型中
+
+            // 将新创建的任务添加到模型中
 //            TaskPanel.taskModel.addElement(newItem);
 //            saveTaskList();
 //        }

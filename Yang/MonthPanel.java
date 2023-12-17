@@ -14,7 +14,7 @@ public class MonthPanel extends JPanel implements Serializable {
     private final Calendar currentCalendar;
     private final Calendar currentCalendarCopy;
     public Map<Integer, String> todoMap; // 使用 Map 将待办事项与日期关联
-    private final Map<Integer, Map<Integer, Map<Integer, DayPanel>>> secondPanelMapByYear;
+    private static Map<Integer, Map<Integer, Map<Integer, DayPanel>>> secondPanelMapByYear;
     private final TodoManager todoManager;
     public MonthPanel() {
         setLayout(new BorderLayout());
@@ -110,7 +110,7 @@ public class MonthPanel extends JPanel implements Serializable {
             DayPanel panelForDay = dayMap.getOrDefault(i, null);
             if (panelForDay == null) {
                 // 如果没有对应的 DayPanel，则创建一个并放入 secondPanelMapByYear
-                panelForDay = new DayPanel("您在当天还没有代办，点击右上角 + 号创建一个吧", 1);
+                panelForDay = new DayPanel();
                 dayMap.put(i, panelForDay);
             }
             int buttonNumber  = panelForDay.getList().size();
@@ -151,26 +151,18 @@ public class MonthPanel extends JPanel implements Serializable {
         monthPanel.revalidate();
         monthPanel.repaint();
     }
-    public static void receiveTodoFromTips(String name, int year, int month, int day){
-
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Java Calendar");
-        frame.setSize(400, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        MonthPanel monthPanel = new MonthPanel();
-        JPanel container = new JPanel(new CardLayout());
-        System.out.println(container);
-        container.add(monthPanel,"MonthPanel");
-        frame.add(container);
-        frame.setVisible(true);
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                monthPanel.onExit();
-                System.exit(0);
+    public static void receiveTodoFromTips(String name, int year, int month, int day) {
+        Map<Integer, DayPanel> dayMap = secondPanelMapByYear.get(year).get(month);
+        if (dayMap != null) {
+            DayPanel panelForDay = dayMap.get(day);
+            if (panelForDay != null) {
+                panelForDay.createTodoList(name);
+            } else {
+                System.out.println("DayPanel for the specified date does not exist.");
             }
-        });
+        } else {
+            System.out.println("DayPanel Map for the specified month does not exist.");
+        }
     }
+
 }

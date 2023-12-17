@@ -8,12 +8,10 @@ import java.io.Serializable;
 public class ToDos implements Serializable {
     private boolean finished;
     private JPanel todoPanel;
-    private JPanel buttonPanel;
     private JLabel label;
-    public ToDos(JPanel todoPanel, boolean finished,JPanel buttonPanel,JLabel label){
+    public ToDos(JPanel todoPanel, boolean finished,JLabel label){
         this.todoPanel = todoPanel;
         this.finished = finished;
-        this.buttonPanel = buttonPanel;
         this.label = label;
     }
     public void setFinished(){
