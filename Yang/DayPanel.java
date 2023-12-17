@@ -38,6 +38,7 @@ public class DayPanel extends JPanel implements Serializable {
      */
     protected JTextField textField;
     private JFrame popupFrame;
+    private boolean flag;
 
     /**
      * 获取待办事项集合的列表。
@@ -50,7 +51,7 @@ public class DayPanel extends JPanel implements Serializable {
 
     public DayPanel() {
         setLayout(new BorderLayout());
-
+        flag = false;
         list = new ArrayList<>();
 
         hintPanel = new JPanel();
@@ -65,35 +66,38 @@ public class DayPanel extends JPanel implements Serializable {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                popupFrame = new JFrame("添加待办集");
-                JPanel popupPanel = new JPanel();
-                JButton okButton = new JButton("√");
-                textField = GetTextField.getTextField(DEFAULT_STRING);
-                okButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (textField.getText().isEmpty()) {
-                            JOptionPane.showMessageDialog(popupFrame, "输入不能为空", "提示", JOptionPane.INFORMATION_MESSAGE);
-                        } else {
-                            popupFrame.dispose();
-                            createTodoList(textField.getText());
+                if (!flag) {
+                    flag = true;
+                    popupFrame = new JFrame("添加待办集");
+                    JPanel popupPanel = new JPanel();
+                    JButton okButton = new JButton("√");
+                    textField = GetTextField.getTextField(DEFAULT_STRING);
+                    okButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if (textField.getText().isEmpty()) {
+                                JOptionPane.showMessageDialog(popupFrame, "输入不能为空", "提示", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                popupFrame.dispose();
+                                createTodoList(textField.getText());
+                            }
                         }
-                    }
-                });
-                popupPanel.setLayout(new FlowLayout());
-                popupPanel.add(textField);
-                popupPanel.add(okButton);
-                popupFrame.add(popupPanel);
-                popupFrame.setSize(300, 100);
-                CalendarPanel calendarPanel = CalendarPanel.getInstance();
-                int x = calendarPanel.getX() + (calendarPanel.getWidth() - popupFrame.getWidth()) / 2;
-                int y = calendarPanel.getY() + (calendarPanel.getHeight() - popupFrame.getHeight()) / 2;
-                popupFrame.setLocation(x, y);
-                popupFrame.setVisible(true);
-                textField.dispatchEvent(new FocusEvent(textField, FocusEvent.FOCUS_GAINED, true));
-                textField.requestFocusInWindow();
-                okButton.dispatchEvent(new FocusEvent(okButton, FocusEvent.FOCUS_GAINED, true));
-                okButton.requestFocusInWindow();
+                    });
+                    popupPanel.setLayout(new FlowLayout());
+                    popupPanel.add(textField);
+                    popupPanel.add(okButton);
+                    popupFrame.add(popupPanel);
+                    popupFrame.setSize(300, 100);
+                    CalendarPanel calendarPanel = CalendarPanel.getInstance();
+                    int x = calendarPanel.getX() + (calendarPanel.getWidth() - popupFrame.getWidth()) / 2;
+                    int y = calendarPanel.getY() + (calendarPanel.getHeight() - popupFrame.getHeight()) / 2;
+                    popupFrame.setLocation(x, y);
+                    popupFrame.setVisible(true);
+                    textField.dispatchEvent(new FocusEvent(textField, FocusEvent.FOCUS_GAINED, true));
+                    textField.requestFocusInWindow();
+                    okButton.dispatchEvent(new FocusEvent(okButton, FocusEvent.FOCUS_GAINED, true));
+                    okButton.requestFocusInWindow();
+                }
             }
         });
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -146,9 +150,8 @@ public class DayPanel extends JPanel implements Serializable {
         smallListPanel.setVisible(true);
 
         JPanel listPanel = toDoList1.getListPanel();
-        listPanel.setMaximumSize(new Dimension(getWidth(),40));//[1]
-        listPanel.setMinimumSize(new Dimension(getWidth(),40));
-        listPanel.setPreferredSize(new Dimension(getPreferredSize().width,40));
+        listPanel.setMaximumSize(new Dimension(1700,40));//[1]
+
         toDoList1.setName(name);
         JLabel userInputLabel = new JLabel(name);
         userInputLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // 左对齐
@@ -159,7 +162,6 @@ public class DayPanel extends JPanel implements Serializable {
         bigListPanel.add(smallListPanel);
         bigListPanel.setVisible(true);
         list.add(toDoList1);//待办集里加入待办
-        ToDoListPanel.addComponentListener(toDoList1.getSizeHandler());
         ToDoListPanel.add(bigListPanel);
         ToDoListPanel.revalidate();
         ToDoListPanel.repaint();

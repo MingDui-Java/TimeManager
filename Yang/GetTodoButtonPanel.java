@@ -11,9 +11,7 @@ import java.util.ArrayList;
  * @author 杨智方
  */
 public class GetTodoButtonPanel {
-//    public static ArrayList<ToDos> todos;
     public static JPanel getTodoButtonPanel(JPanel listPanel, JPanel bigListPanel, Box TodoListPanel,ArrayList<ToDoList> list) {
-//        todos = new ArrayList<>();
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
 
         JButton downButton = new JButton("打开");

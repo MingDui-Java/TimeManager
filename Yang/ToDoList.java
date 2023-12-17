@@ -13,13 +13,12 @@ public class ToDoList implements Serializable {
     private JPanel smallListPanel;
     private JPanel listPanel;
     public static ArrayList<ToDos> toDos;
-    private SizeHandler sizeHandler;
+
     public ToDoList(){
         bigListPanel = new JPanel();
         smallListPanel = new JPanel();
         listPanel = new JPanel(new BorderLayout());
         toDos = new ArrayList<>();
-        sizeHandler = new SizeHandler(this);
     }
     public void setName(String name) {
         this.name = name;
@@ -33,9 +32,7 @@ public class ToDoList implements Serializable {
     public JPanel getSmallListPanel(){
         return smallListPanel;
     }
-    public SizeHandler getSizeHandler(){
-        return sizeHandler;
-    }
+
     public String getName() {
         return name;
     }

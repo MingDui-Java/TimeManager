@@ -71,7 +71,7 @@ class AddButtonListener implements ActionListener, Serializable {
                     Random random = new Random();
                     Color rColor = predefinedColors[random.nextInt(predefinedColors.length)];
                     TodoPanel.setBackground(rColor);
-                    TodoPanel.setMaximumSize(new Dimension(1700, 59));
+                    TodoPanel.setMaximumSize(new Dimension(1700, 40));
                     userInputLabel.setForeground(Color.white);
                     userInputLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // 左对齐
                     TodoPanel.add(userInputLabel, BorderLayout.WEST); // 将名称添加到待办的左侧
