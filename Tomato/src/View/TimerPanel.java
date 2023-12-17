@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
  */
 public class TimerPanel extends JPanel {
 
-    private TomatoPanel tomatoPanel;
+    private MainFrame mainFrame;
     private TodoItem todoItem;
     private JLabel timeLabel;
     private Timer timer;
@@ -27,8 +27,8 @@ public class TimerPanel extends JPanel {
     private int remainingTime;
 
 
-    public TimerPanel(TodoItem todoItem, TomatoPanel tomatoPanel, int index) {
-        this.tomatoPanel = tomatoPanel;
+    public TimerPanel(TodoItem todoItem, MainFrame mainFrame, int index) {
+        this.mainFrame = mainFrame;
         this.todoItem = todoItem;
         this.originalTime = todoItem.getRemainingTime();
         this.index = index;
@@ -93,9 +93,10 @@ public class TimerPanel extends JPanel {
                 if (remainingTime <= 0) {
                     timer.stop();
                     JOptionPane.showMessageDialog(TimerPanel.this, "Time's up!");
+                    todoItem.getTodo().setFinished();
                     notifyFocusTime();
-                    tomatoPanel.removeCompletedTask(index);
-                    tomatoPanel.showTasks();
+                    mainFrame.removeCompletedTask(index);
+                    mainFrame.showTasks();
                 }
             }
         });
@@ -149,12 +150,12 @@ public class TimerPanel extends JPanel {
 
     // 通知主面板切换事项面板
     private void showTasks() {
-        tomatoPanel.showTasks();
+        mainFrame.showTasks();
     }
 
     // 通知观察者
     private void notifyFocusTime() {
         Double focusedTime = (originalTime - remainingTime) * 1.0 / 60;
-        tomatoPanel.notifyObservers(new FocusTimeEntry(todoItem.getTitle(), todoItem.getCreationDay(), focusedTime));
+        mainFrame.notifyObservers(new FocusTimeEntry(todoItem.getTitle(), todoItem.getCreationDay(), focusedTime));
     }
 }

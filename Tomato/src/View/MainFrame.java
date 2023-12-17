@@ -2,6 +2,7 @@ package View;
 
 import Model.DailyFocusTimeChart;
 import Model.TodoItem;
+import Yang.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,8 @@ public class MainFrame extends JFrame {
     private JPanel mainPanel = new JPanel(cardLayout); // 主面板
     private TaskPanel taskPanel = new TaskPanel(MainFrame.this); // 用于事项功能
     private StatisticsPanel statisticsPanel = new StatisticsPanel(); // 用于数据统计功能
+    private CalendarPanel calendarPanel = new CalendarPanel();
+    private JPanel container = new JPanel(new CardLayout());
 
 
     public MainFrame() {
@@ -47,6 +50,15 @@ public class MainFrame extends JFrame {
             }
         });
 
+        // 日视图
+        JButton CalendarButton = new JButton("日视图");
+        CalendarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Container");
+            }
+        });
+
         // 创建并设置布局
         setLayout(new BorderLayout());
 
@@ -54,10 +66,14 @@ public class MainFrame extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(taskButton);
         buttonPanel.add(statsButton);
+        buttonPanel.add(CalendarButton);
+
+        container.add(calendarPanel,"CalendarPanel");
 
         // 配置主面板
         mainPanel.add(taskPanel, "TaskPanel");
         mainPanel.add(statisticsPanel, "StatsPanel");
+        mainPanel.add(container, "Container");
 
         // 添加面板
         add(buttonPanel, BorderLayout.NORTH);

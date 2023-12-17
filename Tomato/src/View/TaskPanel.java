@@ -16,15 +16,15 @@ import java.util.List;
  */
 public class TaskPanel extends JPanel {
 
-    private TomatoPanel mainframe;
-    private DefaultListModel<TodoItem> taskModel = new DefaultListModel<>();
-    private JList<TodoItem> taskList = new JList<>(taskModel);
+    private MainFrame mainframe;
+    public static DefaultListModel<TodoItem> taskModel = new DefaultListModel<>();
+    public JList<TodoItem> taskList = new JList<>(taskModel);
     private JButton addButton = new JButton("Add Task");
     private JButton deleteButton = new JButton("Delete Task");
 
 
-    public TaskPanel(TomatoPanel tomatoPanel) {
-        this.mainframe = tomatoPanel;
+    public TaskPanel(MainFrame mainFrame) {
+        this.mainframe = mainFrame;
 
         loadTaskList();
 
@@ -69,12 +69,27 @@ public class TaskPanel extends JPanel {
                 /*String description = descriptionField.getText();*/
                 int time = (Integer) timeSpinner.getValue();
 
-                // 创建新的TodoItem对象并设置属性
-                TodoItem newItem = new TodoItem(title, time);
+                // 检测是否存在同名任务
+                boolean isDuplicate = false;
+                for (int i = 0; i < taskModel.getSize(); i++) {
+                    TodoItem item = taskModel.getElementAt(i);
+                    if (item != null && item.getTitle().equals(title)) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
 
-                // 将新创建的任务添加到模型中
-                taskModel.addElement(newItem);
-                saveTaskList();
+                if (!isDuplicate) {
+                    // 创建新的TodoItem对象并设置属性
+                    TodoItem newItem = new TodoItem(title, time);
+
+                    // 将新创建的任务添加到模型中
+                    taskModel.addElement(newItem);
+                    saveTaskList();
+                } else {
+                    // 弹出提示框
+                    JOptionPane.showMessageDialog(null, "不能新建同名任务", "错误", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -98,7 +113,9 @@ public class TaskPanel extends JPanel {
                 if (e.getClickCount() == 2) {
                     int index = taskList.locationToIndex(e.getPoint());
                     TodoItem selectedItem = taskModel.getElementAt(index);
-                    showTimerPanel(selectedItem, index);
+                    if (selectedItem != null) {
+                        showTimerPanel(selectedItem, index);
+                    }
                 }
             }
         });
@@ -116,12 +133,7 @@ public class TaskPanel extends JPanel {
 
     // 保存序列化文件
     private void saveTaskList() {
-        File directory = new File("data");
-        if (!directory.exists()) {
-            directory.mkdirs(); // 如果文件夹不存在，则创建
-        }
-
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/tasks.ser"))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("tasks.ser"))) {
             oos.writeObject(new ArrayList<TodoItem>(Collections.list(taskModel.elements())));
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,15 +142,17 @@ public class TaskPanel extends JPanel {
 
     // 加载序列化文件
     private void loadTaskList() {
-        File file = new File("data/tasks.ser");
-        if (!file.exists()) return; // 如果文件不存在，则直接返回
-
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("tasks.ser"))) {
             List<TodoItem> list = (List<TodoItem>) ois.readObject();
             list.forEach(taskModel::addElement);
+        } catch (FileNotFoundException e) {
+            return;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    public DefaultListModel<TodoItem> getTaskModel() {
+        return taskModel;
+    }
 }
