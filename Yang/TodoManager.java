@@ -8,7 +8,7 @@ import java.util.*;
  */
 public class TodoManager {
     private final String DATA_FOLDER = "data";
-    public void loadTodoMap(Map<Integer, Map<Integer, Map<Integer, DayPanel>>> secondPanelMapByYear, Calendar currentCalendarCopy) {
+    public void loadTodoMap(Map<Integer, Map<Integer, Map<Integer, EachDay>>> secondPanelMapByYear, Calendar currentCalendarCopy) {
         try {
             Calendar startCalendar = (Calendar) currentCalendarCopy.clone();
             Calendar endCalendar = (Calendar) currentCalendarCopy.clone();
@@ -19,11 +19,15 @@ public class TodoManager {
                 int month = startCalendar.get(Calendar.MONTH);
                 int day = startCalendar.get(Calendar.DAY_OF_MONTH);
 
-                Map<Integer, Map<Integer, DayPanel>> yearMap = secondPanelMapByYear.get(year);
+                Map<Integer, Map<Integer, EachDay>> yearMap = secondPanelMapByYear.get(year);
                 if (yearMap != null) {
-                    Map<Integer, DayPanel> monthMap = yearMap.get(month);
+                    Map<Integer, EachDay> monthMap = yearMap.get(month);
                     if (monthMap != null) {
-                        DayPanel panelForDay = monthMap.getOrDefault(day, null);
+                        EachDay eachDay = monthMap.getOrDefault(day,null);
+                        DayPanel panelForDay = null;
+                        if(eachDay != null) {
+                             panelForDay = eachDay.dayPanel;
+                        }
                         if (panelForDay != null) {
                             String fileName = String.format("%s/%04d-%02d-%02d.ser", DATA_FOLDER, year, month + 1, day);
                             File file = new File(fileName);
@@ -59,7 +63,7 @@ public class TodoManager {
         }
     }
 
-    public void saveTodoMap(Map<Integer, Map<Integer, Map<Integer, DayPanel>>> secondPanelMapByYear, Calendar currentCalendarCopy) {
+    public void saveTodoMap(Map<Integer, Map<Integer, Map<Integer, EachDay>>> secondPanelMapByYear, Calendar currentCalendarCopy) {
         try {
             Calendar startCalendar = (Calendar) currentCalendarCopy.clone();
             Calendar endCalendar = (Calendar) currentCalendarCopy.clone();
@@ -70,11 +74,15 @@ public class TodoManager {
                 int month = startCalendar.get(Calendar.MONTH);
                 int day = startCalendar.get(Calendar.DAY_OF_MONTH);
 
-                Map<Integer, Map<Integer, DayPanel>> yearMap = secondPanelMapByYear.get(year);
+                Map<Integer, Map<Integer, EachDay>> yearMap = secondPanelMapByYear.get(year);
                 if (yearMap != null) {
-                    Map<Integer, DayPanel> monthMap = yearMap.get(month);
+                    Map<Integer, EachDay> monthMap = yearMap.get(month);
                     if (monthMap != null) {
-                        DayPanel panelForDay = monthMap.getOrDefault(day, null);
+                        EachDay eachDay = monthMap.getOrDefault(day,null);
+                        DayPanel panelForDay = null;
+                        if(eachDay != null){
+                            panelForDay = eachDay.dayPanel;
+                        }
                         if (panelForDay != null && !panelForDay.getList().isEmpty()) {
                             String folderPath = DATA_FOLDER;
                             File folder = new File(folderPath);

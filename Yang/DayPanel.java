@@ -76,6 +76,7 @@ public class DayPanel extends JPanel implements Serializable {
                         if (textField.getText().isEmpty()) {
                             JOptionPane.showMessageDialog(popupFrame, "输入不能为空", "提示", JOptionPane.INFORMATION_MESSAGE);
                         } else {
+                            popupFrame.dispose();
                             createTodoList(textField.getText());
                         }
                     }
@@ -118,7 +119,6 @@ public class DayPanel extends JPanel implements Serializable {
         this.scrollPane = scrollPane;
     }
     public void createTodoList(String name){
-        popupFrame.dispose();
         remove(hintPanel);
         add(scrollPane, BorderLayout.CENTER); // 添加scroll到待办集中
         scrollPane.setVisible(true);
@@ -150,8 +150,8 @@ public class DayPanel extends JPanel implements Serializable {
         listPanel.setMaximumSize(new Dimension(getWidth(),40));//[1]
         listPanel.setMinimumSize(new Dimension(getWidth(),40));
         listPanel.setPreferredSize(new Dimension(getWidth(),40));
-        toDoList1.setName(textField.getText());
-        JLabel userInputLabel = new JLabel(textField.getText());
+        toDoList1.setName(name);
+        JLabel userInputLabel = new JLabel(name);
         userInputLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // 左对齐
         listPanel.add(userInputLabel, BorderLayout.WEST); // 将名称添加到待办的左侧
         JPanel buttonPanel = GetTodoButtonPanel.getTodoButtonPanel(smallListPanel,bigListPanel,ToDoListPanel,list);

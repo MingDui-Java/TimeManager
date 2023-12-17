@@ -155,45 +155,45 @@ class StartButtonListener implements ActionListener, Serializable {
         ArrayList<ToDos> todos = ToDoList.toDos;
         // 显示对话框并获取用户输入
         int result = JOptionPane.showConfirmDialog(null, inputPanel, "Enter Task Details", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            TodoItem newItem = null;
-            String title = titleField.getText();
-            int time = (Integer) timeSpinner.getValue();
-            // 检测是否存在同名任务
-            boolean isDuplicate = false;
-            for (int i = 0; i < TaskPanel.taskModel.getSize(); i++) {
-                TodoItem item = TaskPanel.taskModel.getElementAt(i);
-                if (item != null && item.getTitle().equals(title)) {
-                    isDuplicate = true;
-                    break;
-                }
-            }
-
-            if (!isDuplicate) {
-                JPanel p = (JPanel) buttonPanel.getParent();
-                for (ToDos toDoItem : todos) {// 寻找对应的JPanel
-                    if(toDoItem.getPanel() == p){
-                        newItem = new TodoItem(title, time, toDoItem);
-                        break;
-                    }
-                }
-
-                // 将新创建的任务添加到模型中
-                TaskPanel.taskModel.addElement(newItem);
-                saveTaskList();
-            } else {
-                // 弹出提示框
-                JOptionPane.showMessageDialog(null, "不能新建同名任务", "错误", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-    private static void saveTaskList() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("tasks.ser"))) {
-            oos.writeObject(new ArrayList<TodoItem>(Collections.list(TaskPanel.taskModel.elements())));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//        if (result == JOptionPane.OK_OPTION) {
+//            TodoItem newItem = null;
+//            String title = titleField.getText();
+//            int time = (Integer) timeSpinner.getValue();
+//            // 检测是否存在同名任务
+//            boolean isDuplicate = false;
+//            for (int i = 0; i < TaskPanel.taskModel.getSize(); i++) {
+//                TodoItem item = TaskPanel.taskModel.getElementAt(i);
+//                if (item != null && item.getTitle().equals(title)) {
+//                    isDuplicate = true;
+//                    break;
+//                }
+//            }
+//
+//            if (!isDuplicate) {
+//                JPanel p = (JPanel) buttonPanel.getParent();
+//                for (ToDos toDoItem : todos) {// 寻找对应的JPanel
+//                    if(toDoItem.getPanel() == p){
+//                        newItem = new TodoItem(title, time, toDoItem);
+//                        break;
+//                    }
+//                }
+//
+//                // 将新创建的任务添加到模型中
+//                TaskPanel.taskModel.addElement(newItem);
+//                saveTaskList();
+//            } else {
+//                // 弹出提示框
+//                JOptionPane.showMessageDialog(null, "不能新建同名任务", "错误", JOptionPane.ERROR_MESSAGE);
+//            }
+//        }
+//    }
+//    private static void saveTaskList() {
+//        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("tasks.ser"))) {
+//            oos.writeObject(new ArrayList<TodoItem>(Collections.list(TaskPanel.taskModel.elements())));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
 
 }

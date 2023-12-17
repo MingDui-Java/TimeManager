@@ -14,7 +14,7 @@ public class MonthPanel extends JPanel implements Serializable {
     private final Calendar currentCalendar;
     private final Calendar currentCalendarCopy;
     public Map<Integer, String> todoMap; // 使用 Map 将待办事项与日期关联
-    private static Map<Integer, Map<Integer, Map<Integer, DayPanel>>> secondPanelMapByYear;
+    private static Map<Integer, Map<Integer, Map<Integer, EachDay>>> secondPanelMapByYear;
     private final TodoManager todoManager;
     public MonthPanel() {
         setLayout(new BorderLayout());
@@ -50,10 +50,10 @@ public class MonthPanel extends JPanel implements Serializable {
 
         secondPanelMapByYear = new HashMap<>();
         for (int year = currentCalendar.get(Calendar.YEAR) - 1; year <= currentCalendar.get(Calendar.YEAR) + 1; year++) {
-            Map<Integer, Map<Integer, DayPanel>> monthMap = new HashMap<>();
+            Map<Integer, Map<Integer, EachDay>> monthMap = new HashMap<>();
             secondPanelMapByYear.put(year, monthMap);
             for (int month = 0; month < 12; month++) {
-                Map<Integer, DayPanel> dayMap = new HashMap<>();
+                Map<Integer, EachDay> dayMap = new HashMap<>();
                 monthMap.put(month, dayMap);
             }
         }
@@ -104,14 +104,19 @@ public class MonthPanel extends JPanel implements Serializable {
         }
 
         for (int i = 1; i <= daysInMonth; i++) {
-            Map<Integer, DayPanel> dayMap = secondPanelMapByYear
+            Map<Integer, EachDay> dayMap = secondPanelMapByYear
                     .get(currentCalendarCopy.get(Calendar.YEAR))
                     .get(currentCalendarCopy.get(Calendar.MONTH));
-            DayPanel panelForDay = dayMap.getOrDefault(i, null);
+            EachDay eachDay = dayMap.getOrDefault(i,null);
+            DayPanel panelForDay = null;
+            if(eachDay != null){
+                panelForDay = eachDay.dayPanel;
+            }
             if (panelForDay == null) {
                 // 如果没有对应的 DayPanel，则创建一个并放入 secondPanelMapByYear
                 panelForDay = new DayPanel();
-                dayMap.put(i, panelForDay);
+                eachDay = new EachDay(new JButton(),panelForDay,0,i);
+                dayMap.put(i, eachDay);
             }
             int buttonNumber  = panelForDay.getList().size();
             JButton dayButton = new JButton(String.format("<html>" + i + "<br><center><font size=\"-5\"><span style='position:relative;'><span style='position:absolute; top:0; left:-5px; font-size:5px;'>&#9679;</span>%d</font></center></span></html>", buttonNumber));
@@ -152,16 +157,31 @@ public class MonthPanel extends JPanel implements Serializable {
         monthPanel.repaint();
     }
     public static void receiveTodoFromTips(String name, int year, int month, int day) {
-        Map<Integer, DayPanel> dayMap = secondPanelMapByYear.get(year).get(month);
+        Map<Integer, EachDay> dayMap = secondPanelMapByYear.get(year).get(month - 1);
         if (dayMap != null) {
-            DayPanel panelForDay = dayMap.get(day);
-            if (panelForDay != null) {
-                panelForDay.createTodoList(name);
+            EachDay eachDay = dayMap.get(day);
+            if (eachDay != null) {
+                DayPanel panelForDay = eachDay.dayPanel;
+                if (panelForDay != null) {
+                    panelForDay.createTodoList(name);
+                } else {
+                    panelForDay = new DayPanel();
+                    eachDay = new EachDay(new JButton(),panelForDay,0,day);
+                    dayMap.put(day, eachDay);
+                    panelForDay.createTodoList(name);
+                }
+                Calendar calendar = Calendar.getInstance();
+                int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                for (int i = 1; i <= daysInMonth; i++) {
+                    int buttonNumber = panelForDay.getList().size();
+                    if (i == day) {
+                        JButton dayButton = new JButton(String.format("<html>" + i + "<br><center><font size=\"-5\"><span style='position:relative;'><span style='position:absolute; top:0; left:-5px; font-size:5px;'>&#9679;</span>%d</font></center></span></html>", buttonNumber));
+                        eachDay.setDayButton(dayButton);
+                    }
+                }
             } else {
-                System.out.println("DayPanel for the specified date does not exist.");
+                System.out.println("DayPanel Map for the specified month does not exist.");
             }
-        } else {
-            System.out.println("DayPanel Map for the specified month does not exist.");
         }
     }
 

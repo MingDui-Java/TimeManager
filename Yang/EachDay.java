@@ -24,12 +24,14 @@ public class EachDay extends JPanel implements Serializable {
             @Override
             public void componentShown(ComponentEvent e) {
                 dayButton.setText (String.format("<html>" + day + "<br><center><font size=\"-5\"><span style='position:relative;'><span style='position:absolute; top:0; left:-5px; font-size:5px;'>&#9679;</span>%d</font></center></span></html>", num));
-
             }
         });
     }
     public JButton getDayButton(){
         return dayButton;
+    }
+    public void setDayButton(JButton button){
+        this.dayButton = button;
     }
     public DayPanel getSecondPanel(){
         return dayPanel;
