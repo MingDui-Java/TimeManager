@@ -16,7 +16,7 @@ public class DayPanel extends JPanel implements Serializable {
     /**
      * 待办事项集合的面板。
      */
-    protected JPanel ToDoListPanel;
+    protected Box ToDoListPanel;
 
     /**
      * 提示面板，用于显示默认文本或其他提示信息。
@@ -58,8 +58,7 @@ public class DayPanel extends JPanel implements Serializable {
         hintPanel.add(new JLabel(defaultString));
         hintPanel.setVisible(true);
 
-        ToDoListPanel = new JPanel(); // 待办集
-        ToDoListPanel.setLayout(new BoxLayout(ToDoListPanel, BoxLayout.Y_AXIS)); // 设置待办集为垂直布局
+        ToDoListPanel = Box.createVerticalBox();
         JButton addButton = new JButton("+");
         String DEFAULT_STRING = "请输入待办集名称";
         textField = GetTextField.getTextField(DEFAULT_STRING);
@@ -149,7 +148,7 @@ public class DayPanel extends JPanel implements Serializable {
         JPanel listPanel = toDoList1.getListPanel();
         listPanel.setMaximumSize(new Dimension(getWidth(),40));//[1]
         listPanel.setMinimumSize(new Dimension(getWidth(),40));
-        listPanel.setPreferredSize(new Dimension(getWidth(),40));
+        listPanel.setPreferredSize(new Dimension(getPreferredSize().width,40));
         toDoList1.setName(name);
         JLabel userInputLabel = new JLabel(name);
         userInputLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // 左对齐

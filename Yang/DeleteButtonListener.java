@@ -14,9 +14,9 @@ import java.util.ArrayList;
 class DeleteButtonListener implements ActionListener, Serializable {
     private JPanel bigListPanel;
     private JPanel listPanel;
-    private JPanel TodoListPanel;
+    private Box TodoListPanel;
     private ArrayList<ToDoList> list;
-    public DeleteButtonListener(JPanel bigListPanel, JPanel listPanel,JPanel TodoListPanel,ArrayList<ToDoList> list) {
+    public DeleteButtonListener(JPanel bigListPanel, JPanel listPanel,Box TodoListPanel,ArrayList<ToDoList> list) {
         this.bigListPanel = bigListPanel;
         this.listPanel = listPanel;
         this.TodoListPanel = TodoListPanel;
@@ -49,8 +49,8 @@ class okButton1Listener implements ActionListener, Serializable{
     private JFrame popupFrame;
     private ArrayList<ToDoList> list;
     private JPanel bigListPanel;
-    private JPanel TodoListPanel;
-    public okButton1Listener(JFrame popupFrame, ArrayList<ToDoList> list, JPanel panel, JPanel todoListPanel){
+    private Box TodoListPanel;
+    public okButton1Listener(JFrame popupFrame, ArrayList<ToDoList> list, JPanel panel, Box todoListPanel){
 
         this.popupFrame = popupFrame;
         this.list = list;

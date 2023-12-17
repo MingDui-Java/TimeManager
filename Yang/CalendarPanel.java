@@ -6,12 +6,23 @@ import java.awt.*;
 public class CalendarPanel extends JPanel {
     private MonthPanel monthPanel;
     private CardLayout cardLayout;
-    public CalendarPanel(){
+    private static CalendarPanel calendarPanel;
+    private CalendarPanel(){
         cardLayout=new CardLayout();
         setLayout(cardLayout);
         monthPanel = new MonthPanel();
         add(monthPanel,"MonthPanel");
     }
+    public static CalendarPanel getInstance(){
+        if(calendarPanel == null){
+            calendarPanel = new CalendarPanel();
+        }
+        return calendarPanel;
+    }
+    public void receiveTodoFromTip(){
+        monthPanel.updateCalendar();
+    }
+
     public void showMonthPanel(){
         monthPanel.saveTodoMap();
         cardLayout.show(this, "MonthPanel");
@@ -20,7 +31,7 @@ public class CalendarPanel extends JPanel {
         JFrame frame = new JFrame("Java Calendar");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        CalendarPanel calendarPanel = new CalendarPanel();
+        CalendarPanel calendarPanel = CalendarPanel.getInstance();
         frame.add(calendarPanel);
         frame.setVisible(true);
     }

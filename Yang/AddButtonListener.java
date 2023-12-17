@@ -19,9 +19,8 @@ class AddButtonListener implements ActionListener, Serializable {
     private JButton downButton;
     private JPanel bigListPanel;
     private JPanel listPanel;
-    private JPanel TodoListPanel;
-    public AddButtonListener(JPanel buttonPanel, JButton closeButton, JButton downButton,
-                               JPanel bigListPanel, JPanel listPanel,JPanel TodoListPanel) {
+    private Box TodoListPanel;
+    public AddButtonListener(JPanel buttonPanel, JButton closeButton, JButton downButton, JPanel bigListPanel, JPanel listPanel,Box TodoListPanel) {
         this.buttonPanel = buttonPanel;
         this.closeButton = closeButton;
         this.downButton = downButton;
