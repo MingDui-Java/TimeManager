@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
  */
 public class TimerPanel extends JPanel {
 
-    private MainFrame mainFrame;
+    private TomatoPanel tomatoPanel;
     private TodoItem todoItem;
     private JLabel timeLabel;
     private Timer timer;
@@ -27,8 +27,8 @@ public class TimerPanel extends JPanel {
     private int remainingTime;
 
 
-    public TimerPanel(TodoItem todoItem, MainFrame mainFrame, int index) {
-        this.mainFrame = mainFrame;
+    public TimerPanel(TodoItem todoItem, TomatoPanel tomatoPanel, int index) {
+        this.tomatoPanel = tomatoPanel;
         this.todoItem = todoItem;
         this.originalTime = todoItem.getRemainingTime();
         this.index = index;
@@ -52,11 +52,12 @@ public class TimerPanel extends JPanel {
         taskNamePanel.add(taskNameLabel);
         topPanel.add(taskNamePanel);
 
+        /*
         JPanel taskDescriptionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         taskDescriptionLabel = new JLabel("<html>" + todoItem.getDescription() + "<html>"); // 使用todoItem的标题
         taskDescriptionLabel.setFont(new Font("宋体", Font.BOLD, 12)); // 设置字体
         taskDescriptionPanel.add(taskDescriptionLabel);
-        topPanel.add(taskDescriptionPanel);
+        topPanel.add(taskDescriptionPanel);*/
 
         this.add(topPanel, BorderLayout.NORTH); // 将详情面板添加到顶部
 
@@ -93,8 +94,8 @@ public class TimerPanel extends JPanel {
                     timer.stop();
                     JOptionPane.showMessageDialog(TimerPanel.this, "Time's up!");
                     notifyFocusTime();
-                    mainFrame.removeCompletedTask(index);
-                    mainFrame.showTasks();
+                    tomatoPanel.removeCompletedTask(index);
+                    tomatoPanel.showTasks();
                 }
             }
         });
@@ -148,12 +149,12 @@ public class TimerPanel extends JPanel {
 
     // 通知主面板切换事项面板
     private void showTasks() {
-        mainFrame.showTasks();
+        tomatoPanel.showTasks();
     }
 
     // 通知观察者
     private void notifyFocusTime() {
         Double focusedTime = (originalTime - remainingTime) * 1.0 / 60;
-        mainFrame.notifyObservers(new FocusTimeEntry(todoItem.getTitle(), todoItem.getCreationDay(), focusedTime));
+        tomatoPanel.notifyObservers(new FocusTimeEntry(todoItem.getTitle(), todoItem.getCreationDay(), focusedTime));
     }
 }

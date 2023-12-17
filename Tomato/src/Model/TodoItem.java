@@ -10,17 +10,13 @@ import java.time.LocalDateTime;
 public class TodoItem implements Serializable {
 
     private String title;
-    private String description;
+    //private String description;
     private LocalDate creationDay;
-    private boolean completionStatus;
     private int remainingTime;
-    private int priority;
-    private int duration;
 
-    public TodoItem(String title, String description, int time) {
+    public TodoItem(String title, int time) {
         this.title = title;
-        this.description = description;
-        this.completionStatus = false;
+        //this.description = description;
         this.remainingTime = time * 60;
         creationDay = LocalDate.now();
     }
@@ -41,12 +37,13 @@ public class TodoItem implements Serializable {
         this.remainingTime = remainingTime;
     }
 
+    /*
     public String getDescription() {
         return description;
-    }
+    }*/
 
     @Override
     public String toString() {
-        return title + " - " + description + " - " + remainingTime / 60 + "minutes";
+        return title + " - " + remainingTime / 60 + "minutes";
     }
 }

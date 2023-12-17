@@ -133,7 +133,12 @@ public class StatisticsPanel extends JPanel implements FocusTimeObserver{
 
     // 保存序列化文件
     private void saveFocusTimeEntries() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("focusTimeEntries.ser"))) {
+        File directory = new File("data");
+        if (!directory.exists()) {
+            directory.mkdirs(); // 如果文件夹不存在，则创建
+        }
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/focusTimeEntries.ser"))) {
             oos.writeObject(focusTimeEntries);
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,10 +147,11 @@ public class StatisticsPanel extends JPanel implements FocusTimeObserver{
 
     // 加载序列化文件
     private void loadFocusTimeEntries() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("focusTimeEntries.ser"))) {
+        File file = new File("data/focusTimeEntries.ser");
+        if (!file.exists()) return; // 如果文件不存在，则直接返回
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             focusTimeEntries = (List<FocusTimeEntry>) ois.readObject();
-        } catch (FileNotFoundException e) {
-            return;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

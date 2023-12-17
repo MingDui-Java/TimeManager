@@ -16,15 +16,15 @@ import java.util.List;
  */
 public class TaskPanel extends JPanel {
 
-    private MainFrame mainframe;
+    private TomatoPanel mainframe;
     private DefaultListModel<TodoItem> taskModel = new DefaultListModel<>();
     private JList<TodoItem> taskList = new JList<>(taskModel);
     private JButton addButton = new JButton("Add Task");
     private JButton deleteButton = new JButton("Delete Task");
 
 
-    public TaskPanel(MainFrame mainFrame) {
-        this.mainframe = mainFrame;
+    public TaskPanel(TomatoPanel tomatoPanel) {
+        this.mainframe = tomatoPanel;
 
         loadTaskList();
 
@@ -53,9 +53,9 @@ public class TaskPanel extends JPanel {
             JTextField titleField = new JTextField(10);
             inputPanel.add(titleField);
 
-            inputPanel.add(new JLabel("Description:"));
+            /*inputPanel.add(new JLabel("Description:"));
             JTextField descriptionField = new JTextField(10);
-            inputPanel.add(descriptionField);
+            inputPanel.add(descriptionField);*/
 
             inputPanel.add(new JLabel("Time:"));
             SpinnerModel timeModel = new SpinnerNumberModel(25, 0, 1440, 1);
@@ -66,11 +66,11 @@ public class TaskPanel extends JPanel {
             int result = JOptionPane.showConfirmDialog(null, inputPanel, "Enter Task Details", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
                 String title = titleField.getText();
-                String description = descriptionField.getText();
+                /*String description = descriptionField.getText();*/
                 int time = (Integer) timeSpinner.getValue();
 
                 // 创建新的TodoItem对象并设置属性
-                TodoItem newItem = new TodoItem(title, description, time);
+                TodoItem newItem = new TodoItem(title, time);
 
                 // 将新创建的任务添加到模型中
                 taskModel.addElement(newItem);
@@ -116,7 +116,12 @@ public class TaskPanel extends JPanel {
 
     // 保存序列化文件
     private void saveTaskList() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("tasks.ser"))) {
+        File directory = new File("data");
+        if (!directory.exists()) {
+            directory.mkdirs(); // 如果文件夹不存在，则创建
+        }
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/tasks.ser"))) {
             oos.writeObject(new ArrayList<TodoItem>(Collections.list(taskModel.elements())));
         } catch (IOException e) {
             e.printStackTrace();
@@ -125,11 +130,12 @@ public class TaskPanel extends JPanel {
 
     // 加载序列化文件
     private void loadTaskList() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("tasks.ser"))) {
+        File file = new File("data/tasks.ser");
+        if (!file.exists()) return; // 如果文件不存在，则直接返回
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             List<TodoItem> list = (List<TodoItem>) ois.readObject();
             list.forEach(taskModel::addElement);
-        } catch (FileNotFoundException e) {
-            return;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

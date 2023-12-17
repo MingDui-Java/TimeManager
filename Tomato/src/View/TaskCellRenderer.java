@@ -41,7 +41,6 @@ public class TaskCellRenderer extends DefaultListCellRenderer {
 
             // 格式化任务在列表中的显示方式
             String taskText = "<html><b>" + task.getTitle() + "</b><br>" +
-                    "描述：" + task.getDescription() + "<br>" +
                     "时间：" + task.getRemainingTime() / 60 + " 分钟</html>";
             setText(taskText);
 
