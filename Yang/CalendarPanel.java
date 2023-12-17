@@ -19,8 +19,8 @@ public class CalendarPanel extends JPanel {
         }
         return calendarPanel;
     }
-    public void receiveTodoFromTip(){
-        monthPanel.updateCalendar();
+    public void receiveTodoFromTip(String name, int year, int month, int day){
+        monthPanel.receiveTodo(name,year,month,day);
     }
 
     public void showMonthPanel(){
