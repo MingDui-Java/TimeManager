@@ -170,6 +170,7 @@ class StartButtonListener implements ActionListener, Serializable {
 //
 //            if (!isDuplicate) {
 //                JPanel p = (JPanel) buttonPanel.getParent();
+//                if(todos!=null)
 //                for (ToDos toDoItem : todos) {// 寻找对应的JPanel
 //                    if(toDoItem.getPanel() == p){
 //                        newItem = new TodoItem(title, time, toDoItem);

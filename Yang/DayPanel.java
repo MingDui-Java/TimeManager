@@ -85,8 +85,9 @@ public class DayPanel extends JPanel implements Serializable {
                 popupPanel.add(okButton);
                 popupFrame.add(popupPanel);
                 popupFrame.setSize(300, 100);
-                int x = getParent().getX() + (getParent().getWidth() - popupFrame.getWidth()) / 2;
-                int y = getParent().getY() + (getParent().getHeight() - popupFrame.getHeight()) / 2;
+                CalendarPanel calendarPanel = CalendarPanel.getInstance();
+                int x = calendarPanel.getX() + (calendarPanel.getWidth() - popupFrame.getWidth()) / 2;
+                int y = calendarPanel.getY() + (calendarPanel.getHeight() - popupFrame.getHeight()) / 2;
                 popupFrame.setLocation(x, y);
                 popupFrame.setVisible(true);
                 textField.dispatchEvent(new FocusEvent(textField, FocusEvent.FOCUS_GAINED, true));
@@ -100,10 +101,8 @@ public class DayPanel extends JPanel implements Serializable {
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Container container = getParent();
-                if (container instanceof CalendarPanel) {
-                    ((CalendarPanel) container).showMonthPanel();
-                }
+                CalendarPanel calendarPanel = CalendarPanel.getInstance();
+                calendarPanel.showMonthPanel();
             }
         });
         topPanel.add(returnButton, FlowLayout.LEFT);
@@ -129,8 +128,9 @@ public class DayPanel extends JPanel implements Serializable {
                 JLabel tipLabel = new JLabel("已经添加过名称相同的待办集啦");
                 tip.add(tipLabel);
                 tip.setSize(300, 100);
-                int x = getParent().getX() + (getParent().getWidth() - tip.getWidth()) / 2;
-                int y = getParent().getY() + (getParent().getHeight() - tip.getHeight()) / 2;
+                CalendarPanel calendarPanel = CalendarPanel.getInstance();
+                int x = calendarPanel.getX() + (calendarPanel.getWidth() - tip.getWidth()) / 2;
+                int y = calendarPanel.getY() + (calendarPanel.getHeight() - tip.getHeight()) / 2;
                 tip.setLocation(x, y);
                 tip.setVisible(true);
                 return;

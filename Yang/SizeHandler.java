@@ -24,9 +24,6 @@ public class SizeHandler implements ComponentListener, Serializable {
         panel.setPreferredSize(new Dimension(panel.getWidth(), 40));
         panel.setMaximumSize(new Dimension(panel.getWidth(), 40));
 
-//        smallPanel.setMaximumSize(new Dimension(smallPanel.getPreferredSize().width,40));
-//        smallPanel.setPreferredSize(new Dimension(smallPanel.getPreferredSize().width,40));
-//        smallPanel.setMinimumSize(new Dimension(smallPanel.getPreferredSize().width,40));
         // 重新验证和绘制面板
         panel.revalidate();
         panel.repaint();

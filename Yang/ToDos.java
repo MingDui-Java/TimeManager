@@ -15,7 +15,6 @@ public class ToDos implements Serializable {
         this.label = label;
     }
     public void setFinished(){
-
         this.finished = true;
         this.label.setText("<html><s>" + label.getText() + "</s></html>");
     }
