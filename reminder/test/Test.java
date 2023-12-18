@@ -4,7 +4,8 @@ import reminder.page.DrinkWater;
 import reminder.page.Review;
 
 import javax.swing.*;
-
+import java.awt.*;
+import java.awt.event.*;
 /**
  * @author 86155
  **/
@@ -23,3 +24,4 @@ public class Test extends JFrame {
         jf.setVisible(true);
     }
 }
+

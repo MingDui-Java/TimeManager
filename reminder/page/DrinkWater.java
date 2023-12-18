@@ -115,25 +115,44 @@ public class DrinkWater extends JPanel{
         display.setHorizontalAlignment(SwingConstants.CENTER);
         runTimer();
         centerPanel.add(display);
+        Box ldBox = Box.createVerticalBox();
+        JPanel leftDown = new JPanel();
         JLabel dr = new JLabel("今日喝水次数：");
         dr.setHorizontalAlignment(SwingConstants.CENTER);
-        centerPanel.add(dr);
+        leftDown.add(dr);
         disp.setHorizontalAlignment(SwingConstants.CENTER);
-        centerPanel.add(disp);
+        leftDown.add(disp);
+        ldBox.add(Box.createVerticalGlue());
+        ldBox.add(leftDown);
+        centerPanel.add(ldBox);
+        JLabel rightDown = new JLabel(new ImageIcon("./img/waterbg.png"));
+        rightDown.setHorizontalAlignment(SwingConstants.CENTER);
+        rightDown.setVerticalAlignment(SwingConstants.CENTER);
+        centerPanel.add(rightDown);
 
         //底部标签
+        Box southBox = Box.createHorizontalBox();
         JButton startButton = new JButton("点击打卡喝水");
+        startButton.setSize(2 * getPreferredSize().width, 120);
         startButton.setHorizontalAlignment(SwingConstants.CENTER);
-        con.add(startButton,BorderLayout.SOUTH);
+        southBox.add(Box.createHorizontalGlue());
+        southBox.add(startButton);
+        southBox.add(Box.createHorizontalGlue());
+        ldBox.add(southBox);
+        ldBox.add(Box.createVerticalGlue());
         startButton.addActionListener((e) ->{
-            isDW = 1;
-            stopTimer();
-            onStart();
-            if (flag == 1) {
-                jm2.removeAll();
-                flag = 0;
+            if (dwTimes < 20){
+                isDW = 1;
+                stopTimer();
+                onStart();
+                if (flag == 1) {
+                    jm2.removeAll();
+                    flag = 0;
+                }
+                jm2.add(new JMenuItem(dwMap.get(dwTimes).toString()));
+            }else {
+                JOptionPane.showMessageDialog(null, "今天喝水也太多了趴", "无法喝水打卡", JOptionPane.INFORMATION_MESSAGE);
             }
-            jm2.add(new JMenuItem(dwMap.get(dwTimes).toString()));
         });
 
         return con;

@@ -75,6 +75,12 @@ public class ReviewTask implements Serializable {
 
 	public void fuxi() {
 		state = -1;
+		File f = new File("./data/review.ser");
+		try {
+			new SerialOp<List<ReviewTask>>().ser(f, ReviewTask.getRtList());
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	public int getSetProgress() {
@@ -213,9 +219,6 @@ public class ReviewTask implements Serializable {
 							nextDate = setDate.plusDays(ebb[x]);
 							//receiveTodoFromTips(content, nextDate.getYear(), nextDate.getMonthValue(), nextDate.getDayOfMonth());
 						}
-					}else {
-						nextDate = setDate.plusDays(interval);
-						//receiveTodoFromTips(content, nextDate.getYear(), nextDate.getMonthValue(), nextDate.getDayOfMonth());
 					}
 					if (type == 2) {
 						setProgress = 0;
@@ -266,6 +269,12 @@ public class ReviewTask implements Serializable {
 						if (datesNow == ebb[k]) {
 							state = 1;
 							remindDate = datesNow;
+							File f = new File("./data/review.ser");
+							try {
+								new SerialOp<List<ReviewTask>>().ser(f, ReviewTask.getRtList());
+							} catch (IOException ex) {
+								throw new RuntimeException(ex);
+							}
 							break;
 						}
 					} else {
@@ -281,6 +290,12 @@ public class ReviewTask implements Serializable {
 							if (datesNow == ebb[k]) {
 								state = 1;
 								remindDate = datesNow;
+								File f = new File("./data/review.ser");
+								try {
+									new SerialOp<List<ReviewTask>>().ser(f, ReviewTask.getRtList());
+								} catch (IOException ex) {
+									throw new RuntimeException(ex);
+								}
 								break;
 							}
 						} else {
@@ -297,10 +312,22 @@ public class ReviewTask implements Serializable {
 					nextDate = ld.plusDays(interval);
 					//receiveTodoFromTips(content, nextDate.getYear(), nextDate.getMonthValue(), nextDate.getDayOfMonth());
 					setProgress = datesNow / interval;//已经提醒的次数
+					File f = new File("./data/review.ser");
+					try {
+						new SerialOp<List<ReviewTask>>().ser(f, ReviewTask.getRtList());
+					} catch (IOException ex) {
+						throw new RuntimeException(ex);
+					}
 				}
 			}else {//state == -1
 				if (datesNow % interval != 0) {
 					state = 0;
+					File f = new File("./data/review.ser");
+					try {
+						new SerialOp<List<ReviewTask>>().ser(f, ReviewTask.getRtList());
+					} catch (IOException ex) {
+						throw new RuntimeException(ex);
+					}
 				}
 			}
 		}

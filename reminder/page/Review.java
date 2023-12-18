@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 
 import notepad.FileInfo;
 import reminder.entity.ReviewTask;
@@ -117,10 +118,11 @@ public class Review extends JPanel {
 			i++;
 			k.update();
 			JPanel geJp = new JPanel(new GridLayout(3, 1));
-			JPanel rtJp1 = new JPanel(new FlowLayout());
-			JPanel rtJp2 = new JPanel(new FlowLayout());
-			JPanel rtJp3 = new JPanel(new FlowLayout());
-			JLabel label1 = new JLabel("序号" + i + ": " + "复习任务名称：" + k.getContent());
+			Box rtJp1 = Box.createHorizontalBox();
+			JPanel rtJp2 = new JPanel();
+			JPanel rtJp3 = new JPanel();
+			JLabel label1 = new JLabel("  序号" + i);
+			JLabel label1p5 = new JLabel("名称：" + k.getContent());
 			JLabel label2 = new JLabel("起始时间：" + k.getSetDate().toString());
 			String mode = "";
 			if (k.getType() == 1) {
@@ -138,7 +140,7 @@ public class Review extends JPanel {
 				me = "今日已复习";
 			}
 			case 1 -> {
-				me = "双击打卡今日复习";
+				me = "今日需复习";
 			}
 			}
 			JLabel label4 = new JLabel(me);
@@ -181,14 +183,14 @@ public class Review extends JPanel {
 			JLabel label6 = new JLabel();
 			JProgressBar jpb7 = new JProgressBar();
 			if (k.getType() == 1) {
-				label6.setText("当前进度");
+				label6.setText("  当前进度");
 				jpb7.setMaximum(k.getSetProgress());
 				jpb7.setStringPainted(true);
 				jpb7.setBorderPainted(true);
 				jpb7.setValue(k.getProgressNow() + 1);
 				jpb7.revalidate();
 			}else {
-				label6.setText("当前处于第" + (k.getSetProgress()+1) + "个提醒周期！");
+				label6.setText("  当前处于第" + (k.getSetProgress()+1) + "个提醒周期！");
 				jpb7.setMaximum(k.getInterval());
 				jpb7.setStringPainted(true);
 				jpb7.setBorderPainted(true);
@@ -215,13 +217,19 @@ public class Review extends JPanel {
 				});
 			}
 			rtJp1.add(label1);
+			rtJp1.add(Box.createHorizontalGlue());
+			rtJp1.add(label1p5);
+			rtJp1.add(Box.createHorizontalGlue());
 			rtJp1.add(label2);
-			rtJp1.add(label3);
+			rtJp2.add(Box.createHorizontalBox());
 			rtJp2.add(label4);
 			rtJp2.add(rev5);
 			if (k.getFi() != null) {
 				rtJp2.add(openF);
 			}
+			rtJp2.add(Box.createHorizontalBox());
+			rtJp3.add(label3);
+			rtJp3.add(Box.createHorizontalBox());
 			rtJp3.add(label6);
 			rtJp3.add(jpb7);
 			rtJp3.add(label8);
@@ -231,9 +239,10 @@ public class Review extends JPanel {
 			geJp.add(rtJp1);
 			geJp.add(rtJp2);
 			geJp.add(rtJp3);
-			geJp.setPreferredSize(new Dimension(geJp.getPreferredSize().width, geJp.getPreferredSize().height));
-			geJp.setMaximumSize(new Dimension(geJp.getPreferredSize().width, geJp.getPreferredSize().height));
-			geJp.setMinimumSize(new Dimension(geJp.getPreferredSize().width, geJp.getPreferredSize().height));
+			geJp.setPreferredSize(new Dimension(783, geJp.getPreferredSize().height));
+			geJp.setMaximumSize(new Dimension(783, geJp.getPreferredSize().height));
+			geJp.setMinimumSize(new Dimension(783, geJp.getPreferredSize().height));
+			geJp.setBorder(new BevelBorder(BevelBorder.RAISED));
 			contentBox.add(geJp);
 		}
 		return jp;
