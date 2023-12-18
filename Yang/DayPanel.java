@@ -205,7 +205,7 @@ public class DayPanel extends JPanel implements Serializable {
                     JPanel buttonPanel2 = new JPanel(new GridLayout(1, 2));
 
                     JButton startButton = new JButton("开始");
-                    StartButtonListener startButtonListener = new StartButtonListener(buttonPanel2, List);
+                    StartButtonListener startButtonListener = new StartButtonListener(buttonPanel2, toDoList);
                     startButton.addActionListener(startButtonListener);
 
                     FinishButtonListener finishButtonListener = new FinishButtonListener(todo);
@@ -216,6 +216,7 @@ public class DayPanel extends JPanel implements Serializable {
                     buttonPanel2.add(finishButton);
                     TodoPanel.add(buttonPanel2, BorderLayout.EAST); // 将按钮添加到待办的右侧
                     toDoList.toDos.add(todo);//待办集里加入待办
+                    toDoList.setListPanel(TodoPanel);
                     toDoList.getSmallListPanel().add(TodoPanel);
                     toDoList.getSmallListPanel().revalidate();
                     toDoList.getSmallListPanel().repaint();

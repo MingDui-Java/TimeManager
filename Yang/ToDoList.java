@@ -27,6 +27,10 @@ public class ToDoList implements Serializable {
     public JPanel getBigListPanel(){
         return bigListPanel;
     }
+    public void setListPanel(JPanel panel){
+        listPanel = panel;
+    }
+
     public JPanel getListPanel(){
         return listPanel;
     }
