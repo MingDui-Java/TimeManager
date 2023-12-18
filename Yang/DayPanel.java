@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.io.Serializable;
 import java.util.*;
 
+import static Yang.AddButtonListener.predefinedColors;
+
 /**
  * 这个类代表待办事项列表的面板。
  * 继承自 JPanel，并提供了添加待办事项集合的功能。
@@ -79,6 +81,21 @@ public class DayPanel extends JPanel implements Serializable {
                                 JOptionPane.showMessageDialog(popupFrame, "输入不能为空", "提示", JOptionPane.INFORMATION_MESSAGE);
                             } else {
                                 popupFrame.dispose();
+                                flag = false;
+                                for(ToDoList toDoList1:list){// 判断是否存在相同名称待办集
+                                    if(textField.getText().equals(toDoList1.getName())) {
+                                        JFrame tip = new JFrame("提示");
+                                        JLabel tipLabel = new JLabel("已经添加过名称相同的待办集啦");
+                                        tip.add(tipLabel);
+                                        tip.setSize(300, 100);
+                                        CalendarPanel calendarPanel = CalendarPanel.getInstance();
+                                        int x = calendarPanel.getX() + (calendarPanel.getWidth() - tip.getWidth()) / 2;
+                                        int y = calendarPanel.getY() + (calendarPanel.getHeight() - tip.getHeight()) / 2;
+                                        tip.setLocation(x, y);
+                                        tip.setVisible(true);
+                                        return;
+                                    }
+                                }
                                 createTodoList(textField.getText());
                             }
                         }
@@ -105,6 +122,8 @@ public class DayPanel extends JPanel implements Serializable {
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                remove(scrollPane);
+                add(hintPanel);
                 CalendarPanel calendarPanel = CalendarPanel.getInstance();
                 calendarPanel.showMonthPanel();
             }
@@ -122,41 +141,24 @@ public class DayPanel extends JPanel implements Serializable {
     }
     public void createTodoList(String name){
         remove(hintPanel);
-        add(scrollPane, BorderLayout.CENTER); // 添加scroll到待办集中
-        scrollPane.setVisible(true);
-        revalidate();
-        repaint();
-        for(ToDoList toDoList1:list){// 判断是否存在相同名称待办集
-            if(name.equals(toDoList1.getName())) {
-                JFrame tip = new JFrame("提示");
-                JLabel tipLabel = new JLabel("已经添加过名称相同的待办集啦");
-                tip.add(tipLabel);
-                tip.setSize(300, 100);
-                CalendarPanel calendarPanel = CalendarPanel.getInstance();
-                int x = calendarPanel.getX() + (calendarPanel.getWidth() - tip.getWidth()) / 2;
-                int y = calendarPanel.getY() + (calendarPanel.getHeight() - tip.getHeight()) / 2;
-                tip.setLocation(x, y);
-                tip.setVisible(true);
-                return;
-            }
-        }
-        ToDoList toDoList1 = new ToDoList();
+
+        ToDoList toDoList1 = new ToDoList(name);
 
         JPanel bigListPanel = toDoList1.getBigListPanel();
         bigListPanel.setLayout(new BoxLayout(bigListPanel, BoxLayout.Y_AXIS));
 
         JPanel smallListPanel = toDoList1.getSmallListPanel();
         smallListPanel.setLayout(new BoxLayout(smallListPanel,BoxLayout.Y_AXIS));
+
         smallListPanel.setVisible(true);
 
         JPanel listPanel = toDoList1.getListPanel();
         listPanel.setMaximumSize(new Dimension(1700,40));//[1]
 
-        toDoList1.setName(name);
         JLabel userInputLabel = new JLabel(name);
         userInputLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // 左对齐
         listPanel.add(userInputLabel, BorderLayout.WEST); // 将名称添加到待办的左侧
-        JPanel buttonPanel = GetTodoButtonPanel.getTodoButtonPanel(smallListPanel,bigListPanel,ToDoListPanel,list);
+        JPanel buttonPanel = GetTodoButtonPanel.getTodoButtonPanel(smallListPanel,bigListPanel,ToDoListPanel,list,toDoList1);
         listPanel.add(buttonPanel, BorderLayout.EAST); // 将按钮添加到待办的右侧
         bigListPanel.add(listPanel);
         bigListPanel.add(smallListPanel);
@@ -165,7 +167,65 @@ public class DayPanel extends JPanel implements Serializable {
         ToDoListPanel.add(bigListPanel);
         ToDoListPanel.revalidate();
         ToDoListPanel.repaint();
+        if(scrollPane!=null) remove(scrollPane);
+        JScrollPane scrollPane = new JScrollPane(ToDoListPanel); // 把待办集加到scroll中
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        setScrollPane(scrollPane);
+//        scrollPane.setViewportView(ToDoListPanel);
+
+        add(scrollPane, BorderLayout.CENTER); // 添加scroll到待办集中
+        scrollPane.revalidate();
+        scrollPane.repaint();
+        scrollPane.setVisible(true);
         revalidate();
         repaint();
+
+    }
+    public void createTodo(ToDoList List){
+        for(ToDoList toDoList:list){
+            if(toDoList.getName().equals(List.getName())){
+                ArrayList<ToDos> toDosArrayList = List.toDos;
+                if(toDosArrayList==null) {
+                    System.out.println("fuc");
+                    return;
+                }
+                for(ToDos todo: toDosArrayList) {
+                    JPanel TodoPanel = new JPanel(new BorderLayout());
+                    Random random = new Random();
+                    Color rColor = predefinedColors[random.nextInt(predefinedColors.length)];
+                    TodoPanel.setBackground(rColor);
+                    TodoPanel.setMaximumSize(new Dimension(1700, 40));
+
+                    JLabel userInputLabel = new JLabel(todo.getName());
+                    userInputLabel.setForeground(Color.white);
+                    userInputLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // 左对齐
+                    TodoPanel.add(userInputLabel, BorderLayout.WEST); // 将名称添加到待办的左侧
+
+                    JPanel buttonPanel2 = new JPanel(new GridLayout(1, 2));
+
+                    JButton startButton = new JButton("开始");
+                    StartButtonListener startButtonListener = new StartButtonListener(buttonPanel2, List);
+                    startButton.addActionListener(startButtonListener);
+
+                    FinishButtonListener finishButtonListener = new FinishButtonListener(todo);
+                    JButton finishButton = new JButton("完成");
+                    finishButton.addActionListener(finishButtonListener);
+
+                    buttonPanel2.add(startButton);
+                    buttonPanel2.add(finishButton);
+                    TodoPanel.add(buttonPanel2, BorderLayout.EAST); // 将按钮添加到待办的右侧
+                    toDoList.toDos.add(todo);//待办集里加入待办
+                    toDoList.getSmallListPanel().add(TodoPanel);
+                    toDoList.getSmallListPanel().revalidate();
+                    toDoList.getSmallListPanel().repaint();
+                    toDoList.getBigListPanel().revalidate();
+                    toDoList.getBigListPanel().repaint();
+                    ToDoListPanel.revalidate();
+                    ToDoListPanel.repaint();
+            }
+        }
+
+        }
     }
 }

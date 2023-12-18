@@ -33,6 +33,9 @@ public class EachDay extends JPanel implements Serializable {
     public void setDayButton(JButton button){
         this.dayButton = button;
     }
+    public void setNum(int num){
+        this.num = num;
+    }
     public DayPanel getSecondPanel(){
         return dayPanel;
     }

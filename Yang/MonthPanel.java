@@ -120,10 +120,12 @@ public class MonthPanel extends JPanel implements Serializable {
             }
             int buttonNumber  = panelForDay.getList().size();
             JButton dayButton = new JButton(String.format("<html>" + i + "<br><center><font size=\"-5\"><span style='position:relative;'><span style='position:absolute; top:0; left:-5px; font-size:5px;'>&#9679;</span>%d</font></center></span></html>", buttonNumber));
-            EachDay dayPanel = new EachDay(dayButton,panelForDay,buttonNumber,i);
+            eachDay.setDayButton(dayButton);
+            eachDay.setNum(buttonNumber);
+//            EachDay dayPanel = new EachDay(dayButton,panelForDay,buttonNumber,i);
             if (i == day) {
-                dayPanel.dayButton.setBackground(new Color(190,190,190));
-                dayPanel.dayButton.setOpaque(true);
+                eachDay.dayButton.setBackground(new Color(190,190,190));
+                eachDay.dayButton.setOpaque(true);
             }
             monthPanel.add(dayButton);
             DayPanel finalPanelForDay = panelForDay;
@@ -131,8 +133,15 @@ public class MonthPanel extends JPanel implements Serializable {
                 public void actionPerformed(ActionEvent e) {
                     JPanel container = (JPanel) getParent();
                     if(!finalPanelForDay.getList().isEmpty()){
-                        finalPanelForDay.remove(finalPanelForDay.hintPanel);
+                        finalPanelForDay.ToDoListPanel.removeAll();
+//                        finalPanelForDay.remove(finalPanelForDay.scrollPane);
                         finalPanelForDay.add(finalPanelForDay.scrollPane,BorderLayout.CENTER);
+                        ArrayList<ToDoList> temp = new ArrayList<>(finalPanelForDay.list);
+                        for(ToDoList list: temp){
+                            finalPanelForDay.list.remove(list);
+                            finalPanelForDay.createTodoList(list.getName());
+                            finalPanelForDay.createTodo(list);
+                        }
                         finalPanelForDay.revalidate();
                         finalPanelForDay.repaint();
                     }

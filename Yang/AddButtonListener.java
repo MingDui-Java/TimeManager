@@ -20,18 +20,20 @@ class AddButtonListener implements ActionListener, Serializable {
     private JPanel bigListPanel;
     private JPanel listPanel;
     private Box TodoListPanel;
-    public AddButtonListener(JPanel buttonPanel, JButton closeButton, JButton downButton, JPanel bigListPanel, JPanel listPanel,Box TodoListPanel) {
+    private ToDoList toDoList;
+    public AddButtonListener(JPanel buttonPanel, JButton closeButton, JButton downButton, JPanel bigListPanel, JPanel listPanel,Box TodoListPanel,ToDoList toDoList) {
         this.buttonPanel = buttonPanel;
         this.closeButton = closeButton;
         this.downButton = downButton;
         this.bigListPanel = bigListPanel;
         this.listPanel = listPanel;
         this.TodoListPanel = TodoListPanel;
+        this.toDoList = toDoList;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ArrayList<ToDos> todos = ToDoList.toDos;
+        ArrayList<ToDos> todos = toDoList.toDos;
         JFrame popupFrame = new JFrame("添加待办");
         JPanel popupPanel = new JPanel();
         String DEFAULT_STRING = "请输入待办名称";
@@ -67,7 +69,7 @@ class AddButtonListener implements ActionListener, Serializable {
                     buttonPanel.add(closeButton);
                     JPanel TodoPanel = new JPanel(new BorderLayout());
                     JLabel userInputLabel = new JLabel(textField.getText());
-                    ToDos toDoItem = new ToDos(TodoPanel, false, userInputLabel);
+                    ToDos toDoItem = new ToDos(textField.getText(),TodoPanel, false, userInputLabel);
                     Random random = new Random();
                     Color rColor = predefinedColors[random.nextInt(predefinedColors.length)];
                     TodoPanel.setBackground(rColor);
@@ -79,7 +81,7 @@ class AddButtonListener implements ActionListener, Serializable {
                     JPanel buttonPanel2 = new JPanel(new GridLayout(1, 2));
 
                     JButton startButton = new JButton("开始");
-                    StartButtonListener startButtonListener = new StartButtonListener(buttonPanel2);
+                    StartButtonListener startButtonListener = new StartButtonListener(buttonPanel2,toDoList);
                     startButton.addActionListener(startButtonListener);
 
                     FinishButtonListener finishButtonListener = new FinishButtonListener(toDoItem);
@@ -115,7 +117,7 @@ class AddButtonListener implements ActionListener, Serializable {
         okButton.requestFocusInWindow();
 
     }
-    private final Color[] predefinedColors = {
+    public static Color[] predefinedColors = {
             new Color(72, 61, 139), // 淡蓝色
             new Color(255, 192, 203), // 粉色
             new Color(173, 216, 230), // 浅蓝色
@@ -129,10 +131,11 @@ class AddButtonListener implements ActionListener, Serializable {
 }
 class StartButtonListener implements ActionListener, Serializable {
     private JPanel buttonPanel;
+    private ToDoList toDoList;
 
-    public StartButtonListener(JPanel buttonPanel) {
+    public StartButtonListener(JPanel buttonPanel,ToDoList toDoList) {
         this.buttonPanel = buttonPanel;
-
+        this.toDoList = toDoList;
     }
 
     @Override
@@ -151,7 +154,7 @@ class StartButtonListener implements ActionListener, Serializable {
         SpinnerModel timeModel = new SpinnerNumberModel(25, 0, 1440, 1);
         JSpinner timeSpinner = new JSpinner(timeModel);
         inputPanel.add(timeSpinner);
-        ArrayList<ToDos> todos = ToDoList.toDos;
+        ArrayList<ToDos> todos = toDoList.toDos;
         // 显示对话框并获取用户输入
         int result = JOptionPane.showConfirmDialog(null, inputPanel, "Enter Task Details", JOptionPane.OK_CANCEL_OPTION);
 //        if (result == JOptionPane.OK_OPTION) {

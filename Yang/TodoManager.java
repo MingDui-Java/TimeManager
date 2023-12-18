@@ -7,7 +7,7 @@ import java.util.*;
  * @author 杨智方
  */
 public class TodoManager {
-    private final String DATA_FOLDER = "data";
+    private final String DATA_FOLDER = "data/calendar";
     public void loadTodoMap(Map<Integer, Map<Integer, Map<Integer, EachDay>>> secondPanelMapByYear, Calendar currentCalendarCopy) {
         try {
             Calendar startCalendar = (Calendar) currentCalendarCopy.clone();
@@ -38,13 +38,7 @@ public class TodoManager {
                                         ArrayList<Object> todoList = (ArrayList<Object>) obj;
                                         for (Object todo : todoList) {
                                             if(todo instanceof ToDoList toDoList){
-                                                JPanel bigListPanel = toDoList.getBigListPanel();
-                                                bigListPanel.revalidate();
-                                                bigListPanel.repaint();
-                                                panelForDay.ToDoListPanel.add(bigListPanel);
                                                 panelForDay.getList().add(toDoList);
-                                                JScrollPane scrollPane = new JScrollPane(panelForDay.ToDoListPanel);
-                                                panelForDay.setScrollPane(scrollPane);
                                             }
                                         }
                                     }
@@ -83,7 +77,7 @@ public class TodoManager {
                         if(eachDay != null){
                             panelForDay = eachDay.dayPanel;
                         }
-                        if (panelForDay != null && !panelForDay.getList().isEmpty()) {
+                        if (panelForDay != null ) {
                             String folderPath = DATA_FOLDER;
                             File folder = new File(folderPath);
                             if (!folder.exists()) {

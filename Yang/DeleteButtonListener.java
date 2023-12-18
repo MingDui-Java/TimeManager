@@ -51,7 +51,6 @@ class okButton1Listener implements ActionListener, Serializable{
     private JPanel bigListPanel;
     private Box TodoListPanel;
     public okButton1Listener(JFrame popupFrame, ArrayList<ToDoList> list, JPanel panel, Box todoListPanel){
-
         this.popupFrame = popupFrame;
         this.list = list;
         bigListPanel = panel;

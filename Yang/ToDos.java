@@ -9,14 +9,19 @@ public class ToDos implements Serializable {
     private boolean finished;
     private JPanel todoPanel;
     private JLabel label;
-    public ToDos(JPanel todoPanel, boolean finished,JLabel label){
+    private String name;
+    public ToDos(String name,JPanel todoPanel, boolean finished,JLabel label){
         this.todoPanel = todoPanel;
         this.finished = finished;
         this.label = label;
+        this.name = name;
     }
     public void setFinished(){
         this.finished = true;
         this.label.setText("<html><s>" + label.getText() + "</s></html>");
+    }
+    public String getName(){
+        return name;
     }
     public boolean isFinished(){
         return finished;

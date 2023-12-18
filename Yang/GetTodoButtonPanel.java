@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author 杨智方
  */
 public class GetTodoButtonPanel {
-    public static JPanel getTodoButtonPanel(JPanel listPanel, JPanel bigListPanel, Box TodoListPanel,ArrayList<ToDoList> list) {
+    public static JPanel getTodoButtonPanel(JPanel listPanel, JPanel bigListPanel, Box TodoListPanel,ArrayList<ToDoList> list,ToDoList toDoList) {
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
 
         JButton downButton = new JButton("打开");
@@ -32,7 +32,7 @@ public class GetTodoButtonPanel {
 //        Image temp1 = icon.getImage().getScaledInstance(addButton.getWidth(),addButton.getHeight(),icon.getImage().SCALE_DEFAULT);
 //        icon = new ImageIcon(temp1);
 //        addButton.setIcon(icon);
-        AddButtonListener addButtonListener = new AddButtonListener(buttonPanel,closeButton,downButton,bigListPanel,listPanel,TodoListPanel);
+        AddButtonListener addButtonListener = new AddButtonListener(buttonPanel,closeButton,downButton,bigListPanel,listPanel,TodoListPanel,toDoList);
         addButton.addActionListener(addButtonListener);
 
         JButton deleteButton = new JButton("删除");

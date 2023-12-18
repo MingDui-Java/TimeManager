@@ -12,9 +12,10 @@ public class ToDoList implements Serializable {
     private JPanel bigListPanel;
     private JPanel smallListPanel;
     private JPanel listPanel;
-    public static ArrayList<ToDos> toDos;
+    public ArrayList<ToDos> toDos;
 
-    public ToDoList(){
+    public ToDoList(String name){
+        this.name = name;
         bigListPanel = new JPanel();
         smallListPanel = new JPanel();
         listPanel = new JPanel(new BorderLayout());
