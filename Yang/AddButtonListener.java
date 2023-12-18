@@ -161,8 +161,8 @@ class StartButtonListener implements ActionListener, Serializable {
 //            TodoItem newItem = null;
 //            String title = titleField.getText();
 //            int time = (Integer) timeSpinner.getValue();
-//            // 检测是否存在同名任务
-//            boolean isDuplicate = false;
+            // 检测是否存在同名任务
+            boolean isDuplicate = false;
 //            for (int i = 0; i < TaskPanel.taskModel.getSize(); i++) {
 //                TodoItem item = TaskPanel.taskModel.getElementAt(i);
 //                if (item != null && item.getTitle().equals(title)) {
@@ -170,26 +170,26 @@ class StartButtonListener implements ActionListener, Serializable {
 //                    break;
 //                }
 //            }
-//
-//            if (!isDuplicate) {
+
+            if (!isDuplicate) {
                 JPanel p = (JPanel) buttonPanel.getParent();
-                if(todos!=null)
                 for (ToDos toDoItem : todos) {// 寻找对应的JPanel
                     if(toDoItem.getPanel() == p){
+                        System.out.println("ys");
 //                        newItem = new TodoItem(title, time, toDoItem);
                         break;
                     }
                 }
-//
-//                // 将新创建的任务添加到模型中
+
+                // 将新创建的任务添加到模型中
 //                TaskPanel.taskModel.addElement(newItem);
 //                saveTaskList();
-//            } else {
-//                // 弹出提示框
-//                JOptionPane.showMessageDialog(null, "不能新建同名任务", "错误", JOptionPane.ERROR_MESSAGE);
-//            }
+            } else {
+                // 弹出提示框
+                JOptionPane.showMessageDialog(null, "不能新建同名任务", "错误", JOptionPane.ERROR_MESSAGE);
+            }
         }
-//    }
+    }
 //    private static void saveTaskList() {
 //        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("tasks.ser"))) {
 //            oos.writeObject(new ArrayList<TodoItem>(Collections.list(TaskPanel.taskModel.elements())));
@@ -197,8 +197,6 @@ class StartButtonListener implements ActionListener, Serializable {
 //            e.printStackTrace();
 //        }
 //    }
-}
-
 }
 class FinishButtonListener implements ActionListener,Serializable{
     private ToDos toDos;

@@ -77,11 +77,11 @@ public class DayPanel extends JPanel implements Serializable {
                     okButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            flag = false;
                             if (textField.getText().isEmpty()) {
                                 JOptionPane.showMessageDialog(popupFrame, "输入不能为空", "提示", JOptionPane.INFORMATION_MESSAGE);
                             } else {
                                 popupFrame.dispose();
-                                flag = false;
                                 for(ToDoList toDoList1:list){// 判断是否存在相同名称待办集
                                     if(textField.getText().equals(toDoList1.getName())) {
                                         JFrame tip = new JFrame("提示");
@@ -110,6 +110,27 @@ public class DayPanel extends JPanel implements Serializable {
                     int y = calendarPanel.getY() + (calendarPanel.getHeight() - popupFrame.getHeight()) / 2;
                     popupFrame.setLocation(x, y);
                     popupFrame.setVisible(true);
+                    popupFrame.addComponentListener(new ComponentListener() {
+                        @Override
+                        public void componentResized(ComponentEvent e) {
+
+                        }
+
+                        @Override
+                        public void componentMoved(ComponentEvent e) {
+
+                        }
+
+                        @Override
+                        public void componentShown(ComponentEvent e) {
+
+                        }
+
+                        @Override
+                        public void componentHidden(ComponentEvent e) {
+                            flag = false;
+                        }
+                    });
                     textField.dispatchEvent(new FocusEvent(textField, FocusEvent.FOCUS_GAINED, true));
                     textField.requestFocusInWindow();
                     okButton.dispatchEvent(new FocusEvent(okButton, FocusEvent.FOCUS_GAINED, true));
@@ -204,6 +225,8 @@ public class DayPanel extends JPanel implements Serializable {
 
                     JPanel buttonPanel2 = new JPanel(new GridLayout(1, 2));
 
+                    toDoList.toDos.add(todo);//待办集里加入待办
+//                    toDoList.setListPanel(List.getListPanel());
                     JButton startButton = new JButton("开始");
                     StartButtonListener startButtonListener = new StartButtonListener(buttonPanel2, toDoList);
                     startButton.addActionListener(startButtonListener);
@@ -215,8 +238,7 @@ public class DayPanel extends JPanel implements Serializable {
                     buttonPanel2.add(startButton);
                     buttonPanel2.add(finishButton);
                     TodoPanel.add(buttonPanel2, BorderLayout.EAST); // 将按钮添加到待办的右侧
-                    toDoList.toDos.add(todo);//待办集里加入待办
-                    toDoList.setListPanel(TodoPanel);
+                    todo.setPanel(TodoPanel);
                     toDoList.getSmallListPanel().add(TodoPanel);
                     toDoList.getSmallListPanel().revalidate();
                     toDoList.getSmallListPanel().repaint();
