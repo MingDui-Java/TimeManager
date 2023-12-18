@@ -180,15 +180,6 @@ public class MonthPanel extends JPanel implements Serializable {
                     panelForDay.createTodoList(name);
                 }
                 updateCalendar();
-//                Calendar calendar = Calendar.getInstance();
-//                int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-//                for (int i = 1; i <= daysInMonth; i++) {
-//                    int buttonNumber = panelForDay.getList().size();
-//                    if (i == day) {
-//                        JButton dayButton = new JButton(String.format("<html>" + i + "<br><center><font size=\"-5\"><span style='position:relative;'><span style='position:absolute; top:0; left:-5px; font-size:5px;'>&#9679;</span>%d</font></center></span></html>", buttonNumber));
-//                        eachDay.setDayButton(dayButton);
-//                    }
-//                }
             } else {
 //                System.out.println("DayPanel Map for the specified month does not exist.");
             }

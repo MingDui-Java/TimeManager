@@ -17,8 +17,8 @@ public class ToDos implements Serializable {
         this.name = name;
     }
     public void setFinished(){
+        if(!this.finished) this.label.setText(label.getText() + "（已完成）");
         this.finished = true;
-        this.label.setText("<html><s>" + label.getText() + "</s></html>");
     }
     public String getName(){
         return name;
@@ -26,7 +26,12 @@ public class ToDos implements Serializable {
     public boolean isFinished(){
         return finished;
     }
-
+    public void setLabel(JLabel label){
+        this.label = label;
+    }
+    public JLabel getLabel(){
+        return label;
+    }
     public JPanel getPanel() {
         return this.todoPanel;
     }

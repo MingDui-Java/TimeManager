@@ -36,13 +36,6 @@ public class DayPanel extends JPanel implements Serializable {
     protected JScrollPane scrollPane;
 
     /**
-     * 文本字段，用于用户输入。
-     */
-    protected JTextField textField;
-    private JFrame popupFrame;
-    private boolean flag;
-
-    /**
      * 获取待办事项集合的列表。
      *
      * @return 返回待办事项集合的列表
@@ -53,7 +46,6 @@ public class DayPanel extends JPanel implements Serializable {
 
     public DayPanel() {
         setLayout(new BorderLayout());
-        flag = false;
         list = new ArrayList<>();
 
         hintPanel = new JPanel();
@@ -63,78 +55,20 @@ public class DayPanel extends JPanel implements Serializable {
 
         ToDoListPanel = Box.createVerticalBox();
         JButton addButton = new JButton("+");
-        String DEFAULT_STRING = "请输入待办集名称";
-        textField = GetTextField.getTextField(DEFAULT_STRING);
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!flag) {
-                    flag = true;
-                    popupFrame = new JFrame("添加待办集");
-                    JPanel popupPanel = new JPanel();
-                    JButton okButton = new JButton("√");
-                    textField = GetTextField.getTextField(DEFAULT_STRING);
-                    okButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            flag = false;
-                            if (textField.getText().isEmpty()) {
-                                JOptionPane.showMessageDialog(popupFrame, "输入不能为空", "提示", JOptionPane.INFORMATION_MESSAGE);
-                            } else {
-                                popupFrame.dispose();
-                                for(ToDoList toDoList1:list){// 判断是否存在相同名称待办集
-                                    if(textField.getText().equals(toDoList1.getName())) {
-                                        JFrame tip = new JFrame("提示");
-                                        JLabel tipLabel = new JLabel("已经添加过名称相同的待办集啦");
-                                        tip.add(tipLabel);
-                                        tip.setSize(300, 100);
-                                        CalendarPanel calendarPanel = CalendarPanel.getInstance();
-                                        int x = calendarPanel.getX() + (calendarPanel.getWidth() - tip.getWidth()) / 2;
-                                        int y = calendarPanel.getY() + (calendarPanel.getHeight() - tip.getHeight()) / 2;
-                                        tip.setLocation(x, y);
-                                        tip.setVisible(true);
-                                        return;
-                                    }
-                                }
-                                createTodoList(textField.getText());
-                            }
+                String newName = JOptionPane.showInputDialog("添加待办集");
+                if (newName.isEmpty()) {
+                    JOptionPane.showMessageDialog(new JFrame(), "输入不能为空", "提示", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    for (ToDoList toDoList1 : list) {// 判断是否存在相同名称待办集
+                        if (newName.equals(toDoList1.getName())) {
+                            JOptionPane.showMessageDialog(new JFrame(),"已经添加过名称相同的待办集啦","提示",JOptionPane.INFORMATION_MESSAGE);
+                            return;
                         }
-                    });
-                    popupPanel.setLayout(new FlowLayout());
-                    popupPanel.add(textField);
-                    popupPanel.add(okButton);
-                    popupFrame.add(popupPanel);
-                    popupFrame.setSize(300, 100);
-                    CalendarPanel calendarPanel = CalendarPanel.getInstance();
-                    int x = calendarPanel.getX() + (calendarPanel.getWidth() - popupFrame.getWidth()) / 2;
-                    int y = calendarPanel.getY() + (calendarPanel.getHeight() - popupFrame.getHeight()) / 2;
-                    popupFrame.setLocation(x, y);
-                    popupFrame.setVisible(true);
-                    popupFrame.addComponentListener(new ComponentListener() {
-                        @Override
-                        public void componentResized(ComponentEvent e) {
-
-                        }
-
-                        @Override
-                        public void componentMoved(ComponentEvent e) {
-
-                        }
-
-                        @Override
-                        public void componentShown(ComponentEvent e) {
-
-                        }
-
-                        @Override
-                        public void componentHidden(ComponentEvent e) {
-                            flag = false;
-                        }
-                    });
-                    textField.dispatchEvent(new FocusEvent(textField, FocusEvent.FOCUS_GAINED, true));
-                    textField.requestFocusInWindow();
-                    okButton.dispatchEvent(new FocusEvent(okButton, FocusEvent.FOCUS_GAINED, true));
-                    okButton.requestFocusInWindow();
+                    }
+                    createTodoList(newName);
                 }
             }
         });
@@ -188,13 +122,12 @@ public class DayPanel extends JPanel implements Serializable {
         ToDoListPanel.add(bigListPanel);
         ToDoListPanel.revalidate();
         ToDoListPanel.repaint();
+
         if(scrollPane!=null) remove(scrollPane);
         JScrollPane scrollPane = new JScrollPane(ToDoListPanel); // 把待办集加到scroll中
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         setScrollPane(scrollPane);
-//        scrollPane.setViewportView(ToDoListPanel);
-
         add(scrollPane, BorderLayout.CENTER); // 添加scroll到待办集中
         scrollPane.revalidate();
         scrollPane.repaint();
@@ -222,11 +155,13 @@ public class DayPanel extends JPanel implements Serializable {
                     userInputLabel.setForeground(Color.white);
                     userInputLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // 左对齐
                     TodoPanel.add(userInputLabel, BorderLayout.WEST); // 将名称添加到待办的左侧
-
+                    todo.setLabel(userInputLabel);
+                    if(todo.isFinished()){
+                        todo.getLabel().setText(todo.getLabel().getText() + "(已完成）");
+                    }
                     JPanel buttonPanel2 = new JPanel(new GridLayout(1, 2));
 
                     toDoList.toDos.add(todo);//待办集里加入待办
-//                    toDoList.setListPanel(List.getListPanel());
                     JButton startButton = new JButton("开始");
                     StartButtonListener startButtonListener = new StartButtonListener(buttonPanel2, toDoList);
                     startButton.addActionListener(startButtonListener);
