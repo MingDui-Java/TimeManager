@@ -1,3 +1,9 @@
+/**
+ * 提醒事项和喝水提醒的页面包
+ *
+ * @author DdddM
+ * @version 1.0
+ */
 package reminder.page;
 
 import java.awt.BorderLayout;
@@ -25,65 +31,138 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
-import reminder.entity.DW;
+import reminder.entity.WaterDrink;
 import reminder.tool.SerialOp;
 import timemanager.TimeManagerFrame;
 
 /**
- * @author 86155
+ * 喝水提醒面板<BR/>
+ * 使用了单例模式
+ *
+ * @author DdddM
+ * @version 1.0
  **/
 public class DrinkWaterPanel extends JPanel {
+	/**
+	 * 喝水提醒面板的单例
+	 */
 	private static DrinkWaterPanel instance = null;
+	/**
+	 * 当前运行时的日期
+	 */
 	LocalDate ld;
+	/**
+	 * 上一次打卡时的小时数
+	 */
 	int hourSet = 0;
+	/**
+	 * 上一次打卡时的分钟数
+	 */
 	int minSet = 0;
+	/**
+	 * 上一次打卡时的秒数
+	 */
 	int secondSet = 0;
-	int dwTimes = 0;
+	/**
+	 * 当日喝水总次数（不可超过20）
+	 */
+	int drinkWaterTimes = 0;
+	/**
+	 * 自定义提醒间隔
+	 */
 	double remindInterval = 2;
-	int flag = 0, ff = 0, isDW = 0;
+	/**
+	 * 标记位———是否导入今日记录
+	 */
+	int flag = 0;
+	/**
+	 * 标记位———是否需要提醒
+	 */
+	int remindTag = 0;
+	/**
+	 * 标记位———今日是否喝过水
+	 */
+	int isDrinkWater = 0;
+	/**
+	 * 时间格式字符串生成器
+	 */
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+	/**
+	 * 显示的时间字符串
+	 */
 	String timeStr = "--:--:--";
-	JLabel display = new JLabel(timeStr);
-	JLabel disp = new JLabel();
+	/**
+	 * 展示时间的标签
+	 */
+	JLabel displayTime = new JLabel(timeStr);
+	/**
+	 * 展示喝水次数的标签
+	 */
+	JLabel displayRecords = new JLabel();
+	/**
+	 * 一个计时器
+	 */
 	Timer timer;
-	Map<Integer, DW> dwMap;
-
+	/**
+	 * 保存喝水记录的图
+	 */
+	Map<Integer, WaterDrink> waterDrinkMap;
+	/**
+	 * 喝水提醒面板的构造函数
+	 */
 	private DrinkWaterPanel() {
 	}
-
+	/**
+	 * 获取喝水提醒面板的单例
+	 *
+	 * @return 喝水提醒面板的单例
+	 */
 	public static DrinkWaterPanel getInstance() {
 		if (instance == null) {
 			instance = new DrinkWaterPanel();
 		}
 		return instance;
 	}
-
+	/**
+	 * 初始化喝水提醒面板<BR/>
+	 * 只有一个面板，显示距离上一次喝水的时间间隔，以及当日喝水次数
+	 *
+	 * @author DdddM
+	 * @return 整个喝水提醒面板
+	 *
+	 * @serialData 更新waterDrinkMap
+	 * @throws RuntimeException 序列化中出现的异常
+	 */
 	public JPanel initialize() throws Exception {
 		ld = LocalDate.now();
 		// 读取
 		int setTFlag = 1;
 		File df = new File("./data/dw.ser");
 		if (df.exists()) {
-			dwMap = new SerialOp<java.util.Map<Integer, DW>>().dSer(df);
-			isDW = 1;
-			if (dwMap.isEmpty() || !dwMap.get(1).getDate().equals(ld)) {
-				dwMap = new LinkedHashMap<>();
+			waterDrinkMap = new SerialOp<java.util.Map<Integer, WaterDrink>>().dSer(df);
+			isDrinkWater = 1;
+			if (waterDrinkMap.isEmpty() || !waterDrinkMap.get(1).getDate().equals(ld)) {
+				waterDrinkMap = new LinkedHashMap<>();
 				setTFlag = 0;
-				isDW = 0;
+				isDrinkWater = 0;
 			}
-			dwTimes = dwMap.size();
+			drinkWaterTimes = waterDrinkMap.size();
 		} else {
-			dwMap = new LinkedHashMap<>();
-			dwTimes = 0;
+			waterDrinkMap = new LinkedHashMap<>();
+			drinkWaterTimes = 0;
 		}
-		disp.setText(String.valueOf(dwTimes));
+		displayRecords.setText(String.valueOf(drinkWaterTimes));
 		if (setTFlag == 1) {
 			File timeF = new File("./data/setTime.ser");
 			if (timeF.exists()) {
-				int[] time = new SerialOp<int[]>().dSer(timeF);
-				hourSet = time[0];
-				minSet = time[1];
-				secondSet = time[2];
+				try {
+					int[] time = new SerialOp<int[]>().dSer(timeF);
+					hourSet = time[0];
+					minSet = time[1];
+					secondSet = time[2];
+				}catch (IOException ex){
+					throw new RuntimeException(ex);
+				}
 			} else {
 				hourSet = 0;
 				minSet = 0;
@@ -112,7 +191,7 @@ public class DrinkWaterPanel extends JPanel {
 		jmb.add(jm2);
 		jmb.add(Box.createHorizontalGlue());
 		jmb.add(jb3);
-		setJm(jm1, jm2);
+		setJMenu(jm1, jm2);
 		jb3.addActionListener(e -> {
 			String message = """
 					该提醒将会以设定好的时间(默认为2小时)进行提醒，分别在
@@ -132,16 +211,16 @@ public class DrinkWaterPanel extends JPanel {
 		JLabel d = new JLabel("距离上一次喝水已经过去了：");
 		d.setHorizontalAlignment(SwingConstants.CENTER);
 		centerPanel.add(d);
-		display.setHorizontalAlignment(SwingConstants.CENTER);
+		displayTime.setHorizontalAlignment(SwingConstants.CENTER);
 		runTimer();
-		centerPanel.add(display);
+		centerPanel.add(displayTime);
 		Box ldBox = Box.createVerticalBox();
 		JPanel leftDown = new JPanel();
 		JLabel dr = new JLabel("今日喝水次数：");
 		dr.setHorizontalAlignment(SwingConstants.CENTER);
 		leftDown.add(dr);
-		disp.setHorizontalAlignment(SwingConstants.CENTER);
-		leftDown.add(disp);
+		displayRecords.setHorizontalAlignment(SwingConstants.CENTER);
+		leftDown.add(displayRecords);
 		ldBox.add(Box.createVerticalGlue());
 		ldBox.add(leftDown);
 		centerPanel.add(ldBox);
@@ -161,15 +240,15 @@ public class DrinkWaterPanel extends JPanel {
 		ldBox.add(southBox);
 		ldBox.add(Box.createVerticalGlue());
 		startButton.addActionListener((e) -> {
-			if (dwTimes < 20) {
-				isDW = 1;
+			if (drinkWaterTimes < 20) {
+				isDrinkWater = 1;
 				stopTimer();
 				onStart();
 				if (flag == 1) {
 					jm2.removeAll();
 					flag = 0;
 				}
-				jm2.add(new JMenuItem(dwMap.get(dwTimes).toString()));
+				jm2.add(new JMenuItem(waterDrinkMap.get(drinkWaterTimes).toString()));
 			} else {
 				JOptionPane.showMessageDialog(null, "今天喝水也太多了趴", "无法喝水打卡", JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -177,18 +256,23 @@ public class DrinkWaterPanel extends JPanel {
 
 		return con;
 	}
-
-	void setJm(JMenu jm1, JMenu jm2) {
+	/**
+	 * 设置提醒面板的菜单栏
+	 *
+	 * @param menu1 设置模式的菜单
+	 * @param menu2 查看当日喝水记录的菜单
+	 */
+	void setJMenu(JMenu menu1, JMenu menu2) {
 		JMenuItem h1p5 = new JMenuItem("1小时30分");
 		JMenuItem h2 = new JMenuItem("2小时");
 		JMenuItem h2p5 = new JMenuItem("2小时30分");
 		JMenuItem h3 = new JMenuItem("3小时");
 		JMenuItem custom = new JMenuItem("自定义");
-		jm1.add(h1p5);
-		jm1.add(h2);
-		jm1.add(h2p5);
-		jm1.add(h3);
-		jm1.add(custom);
+		menu1.add(h1p5);
+		menu1.add(h2);
+		menu1.add(h2p5);
+		menu1.add(h3);
+		menu1.add(custom);
 		h1p5.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -219,44 +303,51 @@ public class DrinkWaterPanel extends JPanel {
 				try {
 					String interval = JOptionPane.showInputDialog(null, "输入自定义喝水提醒间隔：\n(小数形式，单位小时，大于0.1)");
 					remindInterval = Double.parseDouble(interval);
-					ff = -1;
+					remindTag = -1;
 				} catch (NullPointerException ignored) {
 				} catch (NumberFormatException ignored) {
 					JOptionPane.showMessageDialog(new JPanel(), "请输入合法的数字！", "输入警告", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
-		if (dwMap.isEmpty()) {
-			jm2.add(new JMenuItem("今日无喝水记录"));
+		if (waterDrinkMap.isEmpty()) {
+			menu2.add(new JMenuItem("今日无喝水记录"));
 			flag = 1;
 		} else {
-			for (int y = 1; y <= dwTimes; y++) {
-				jm2.add(new JMenuItem(dwMap.get(y).toString()));
+			for (int y = 1; y <= drinkWaterTimes; y++) {
+				menu2.add(new JMenuItem(waterDrinkMap.get(y).toString()));
 			}
 		}
 	}
-
+	/**
+	 * 停止计时器
+	 */
 	private void stopTimer() {
 		if (timer != null) {
 			timer.stop();
 		}
 	}
-
+	/**
+	 * 开始计时
+	 *
+	 * @serialData 更新waterDrinkMap
+	 * @throws RuntimeException 序列化中出现的异常
+	 */
 	private void onStart() {
-		dwTimes++;
-		disp.setText(String.valueOf(dwTimes));
+		drinkWaterTimes++;
+		displayRecords.setText(String.valueOf(drinkWaterTimes));
 		timeStr = "00:00:00";
-		display.setText(timeStr);
+		displayTime.setText(timeStr);
 		LocalTime time = LocalTime.now();
 		String timeSet = formatter.format(time);
-		dwMap.put(dwTimes, new DW(timeSet, dwTimes));
+		waterDrinkMap.put(drinkWaterTimes, new WaterDrink(timeSet, drinkWaterTimes));
 		hourSet = getT(timeSet.charAt(0), timeSet.charAt(1));
 		minSet = getT(timeSet.charAt(3), timeSet.charAt(4));
 		secondSet = getT(timeSet.charAt(6), timeSet.charAt(7));
 		// 保存
 		File sf = new File("./data/dw.ser");
 		try {
-			new SerialOp<java.util.Map<Integer, DW>>().ser(sf, dwMap);
+			new SerialOp<java.util.Map<Integer, WaterDrink>>().ser(sf, waterDrinkMap);
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
@@ -269,10 +360,12 @@ public class DrinkWaterPanel extends JPanel {
 		}
 		runTimer();
 	}
-
+	/**
+	 * 运行计时器
+	 */
 	void runTimer() {
 		// 创建定时器每隔,每隔1000毫秒执行一次
-		if (isDW == 1) {
+		if (isDrinkWater == 1) {
 			timer = new Timer(1000, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -286,7 +379,12 @@ public class DrinkWaterPanel extends JPanel {
 			timer.start();
 		}
 	}
-
+	/**
+	 * 随时间更新面板内容
+	 *
+	 * @serialData 更新waterDrinkMap
+	 * @throws RuntimeException 序列化中出现的异常
+	 */
 	private void updateTime() throws Exception {
 		LocalTime t = LocalTime.now();
 		String tNow = formatter.format(t);
@@ -315,14 +413,27 @@ public class DrinkWaterPanel extends JPanel {
 			hour--;
 		}
 		timeStr = String.format("%02d:%02d:%02d", hour, min, second);
-		display.setText(timeStr);
+		displayTime.setText(timeStr);
 		remind(hour, min, second);
 	}
-
+	/**
+	 * 从字符串获取时间数字
+	 *
+	 * @param a 十位
+	 * @param b 个位
+	 * @return 对应时间数字
+	 */
 	int getT(char a, char b) {
 		return (a - '0') * 10 + (b - '0');
 	}
-
+	/**
+	 * 进行喝水提醒<BR/>
+	 * 根据设定好的提醒间隔和现在未喝水时间发出不同的提醒
+	 *
+	 * @param h 未喝水的小时数
+	 * @param m 未喝水的分钟数
+	 * @param s 未喝水的秒数
+	 */
 	void remind(int h, int m, int s) {
 		double as = 1.0 / 3600;
 		double r = remindInterval;
@@ -336,11 +447,11 @@ public class DrinkWaterPanel extends JPanel {
 			JOptionPane.showMessageDialog(new JPanel(), "嗓子已经冒烟了！", "喝水提醒", JOptionPane.INFORMATION_MESSAGE);
 		}
 
-		if (ff == -1) {
+		if (remindTag == -1) {
 			if (rNow > r) {
 				JOptionPane.showMessageDialog(new JPanel(), "该喝水了！", "喝水提醒", JOptionPane.INFORMATION_MESSAGE);
 			}
-			ff = 0;
+			remindTag = 0;
 		}
 	}
 }

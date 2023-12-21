@@ -1,9 +1,18 @@
+/**
+ * 测试包
+ *
+ * @author DdddM
+ * @version 1.0
+ */
 package reminder.test;
 
 import javax.swing.JFrame;
 
 /**
- * @author 86155
+ * 开发时的测试类
+ *
+ * @author DdddM
+ * @version 1.0
  **/
 public class Test extends JFrame {
 //	public static void main(String[] args) throws Exception {
