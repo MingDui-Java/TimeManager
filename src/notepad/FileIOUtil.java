@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * 用于文件读写的工具类
@@ -76,7 +77,7 @@ public class FileIOUtil {
 	/**
 	 * 打开资源管理器选择文件路径
 	 * <p>
-	 * 打开资源管理器让用户选择文件路径，资源管理器中只会显示文件夹和笔记文件，也会自动添加笔记文件的统一后缀名
+	 * 打开资源管理器让用户选择文件路径，资源管理器中只会显示文件夹和笔记文件，该方法会屏蔽"提醒："开头的文件防止冲突，也会自动添加笔记文件的统一后缀名
 	 * 
 	 * @return 通过用户选择路径创建的文件
 	 */
@@ -88,7 +89,10 @@ public class FileIOUtil {
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			// 添加文件名后缀
-			if (!file.getName().toLowerCase().endsWith(".tmnote")) {
+			if (file.getName().startsWith("提醒：")) {
+				JOptionPane.showMessageDialog(null, "笔记不能以\"提醒：\"开头", "错误", JOptionPane.INFORMATION_MESSAGE);
+				return null;
+			} else if (!file.getName().toLowerCase().endsWith(".tmnote")) {
 				file = new File(file.getPath() + ".tmnote");
 			}
 			return file;

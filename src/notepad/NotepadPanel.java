@@ -5,6 +5,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -92,7 +93,7 @@ public class NotepadPanel extends JPanel {
 	/**
 	 * 打开资源管理器选择文件
 	 * <p>
-	 * 打开资源管理器让用户选择文件，资源管理器中只会显示文件夹和笔记文件
+	 * 打开资源管理器让用户选择文件，资源管理器中只会显示文件夹和笔记文件，该方法会屏蔽"提醒："开头的文件防止冲突
 	 * 
 	 * @return 用户选择文件的文件信息，如果未能获取文件信息返回null
 	 */
@@ -107,7 +108,12 @@ public class NotepadPanel extends JPanel {
 		int result = fileChooser.showOpenDialog(parentFrame);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
-			if (!selectedFile.exists() || !selectedFile.getName().toLowerCase().endsWith(".tmnote")) {
+			if (!selectedFile.exists()) {
+				return null;
+			} else if (selectedFile.getName().startsWith("提醒：")) {
+				JOptionPane.showMessageDialog(null, "笔记不能以\"提醒：\"开头", "错误", JOptionPane.INFORMATION_MESSAGE);
+				return null;
+			} else if (!selectedFile.getName().toLowerCase().endsWith(".tmnote")) {
 				return null;
 			} else {
 				FileManager.getInstance().importFile(selectedFile);
