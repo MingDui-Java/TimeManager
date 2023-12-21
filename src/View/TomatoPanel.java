@@ -27,12 +27,21 @@ public class TomatoPanel extends JPanel {
 	 * 布局
 	 */
 	private CardLayout cardLayout = new CardLayout();
+	/**
+	 * 主面板
+	 */
 	private JPanel mainPanel = new JPanel(cardLayout); // 主面板
 	/**
-	 * 事项面板与数据统计面板、计时器面板
+	 * 事项面板
 	 */
 	private TaskPanel taskPanel = new TaskPanel(TomatoPanel.this); // 用于事项功能
+	/**
+	 * 数据统计面板
+	 */
 	private StatisticsPanel statisticsPanel = new StatisticsPanel(); // 用于数据统计功能
+	/**
+	 * 计时器面板
+	 */
 	static private TimerPanel timerPanel;
 
 	/**
@@ -130,6 +139,9 @@ public class TomatoPanel extends JPanel {
 //		});
 //	}
 
+	/**
+	 * 暂停计时器
+	 */
 	public static void stopTimer() {
 		if (timerPanel != null) {
 			timerPanel.stopTimer();

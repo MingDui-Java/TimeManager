@@ -12,10 +12,16 @@ import java.time.LocalDate;
  */
 public class FocusTimeEntry implements Serializable {
     /**
-     * 专注时长的标题、日期、时间
+     * 专注时长的标题
      */
     private String title;
+    /**
+     * 专注时长的日期
+     */
     private LocalDate date;
+    /**
+     * 专注时长的时间
+     */
     private Double minutes;
 
     /**

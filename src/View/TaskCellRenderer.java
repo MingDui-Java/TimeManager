@@ -17,13 +17,20 @@ import java.util.Map;
  */
 public class TaskCellRenderer extends DefaultListCellRenderer {
     /**
-     * 颜色、字体粗细的参数
+     * 字体粗细
      */
     private static final int BORDER_THICKNESS = 2;
+    /**
+     * 边框颜色
+     */
     private static final Color BORDER_COLOR = Color.GRAY;
+    /**
+     * 阴影颜色
+     */
     private static final Color SHADOW_COLOR = new Color(0, 0, 0, 50);
 
     /**
+     * 生成单元格渲染器组件
      *
      * @param list The JList we're painting.
      * @param value The value returned by list.getModel().getElementAt(index).

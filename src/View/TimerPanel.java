@@ -34,29 +34,44 @@ public class TimerPanel extends JPanel {
 	 */
 	private TodoItem todoItem;
 	/**
-	 * 计时器面板的时间、任务名
+	 * 计时器面板的时间名
 	 */
 	private JLabel timeLabel;
+	/**
+	 * 计时器面板的任务名
+	 */
 	private JLabel taskNameLabel;
 	/**
 	 * 计时器
 	 */
 	private Timer timer;
 	/**
-	 * 一些按钮
+	 * 开始按钮
 	 */
 	private JButton startButton;
+	/**
+	 * 控制按钮
+	 */
 	private JButton controlButton;
+	/**
+	 * 退出按钮
+	 */
 	private JButton backButton;
 	/**
 	 * 进度条
 	 */
 	private JProgressBar progressBar;
 	/**
-	 * 事项对应的下标、初始时间和剩余时间
+	 * 事项对应的下标
 	 */
 	private int index;
+	/**
+	 * 事项的原始时间
+	 */
 	private int originalTime;
+	/**
+	 * 事项的剩余时间
+	 */
 	private int remainingTime;
 
 	/**
