@@ -12,24 +12,29 @@ import javax.swing.JPanel;
 
 import timemanager.TimeManagerFrame;
 
+/**
+ * 主题预览面板
+ * 
+ * @author Aintme
+ * @version 1.0
+ */
 public class SkinPanel extends JPanel {
 
 	/**
-	 * 
+	 * SkinPanel类版本的标识符
 	 */
 	private static final long serialVersionUID = -1575601851004457341L;
-	private static final String PATHTOIMAGE = "/image/";
 
-	private int indexOfSkin;
-
+	/**
+	 * 创建一个主题预览面板
+	 */
 	public SkinPanel(int indexOfSkin) {
-		this.indexOfSkin = indexOfSkin;
 		setLayout(new BorderLayout());
 		JPanel imagePanel = new JPanel();
 		imagePanel.setLayout(new GridLayout(2, 2));
 		for (int i = 0; i < 4; i++) {
 			JLabel label = new JLabel(
-					new ImageIcon(TimeManagerFrame.class.getResource(PATHTOIMAGE + indexOfSkin + "_" + i + ".png")));
+					new ImageIcon(TimeManagerFrame.class.getResource("/image/" + indexOfSkin + "_" + i + ".png")));
 			imagePanel.add(label);
 		}
 		add(imagePanel, BorderLayout.CENTER);

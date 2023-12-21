@@ -29,21 +29,55 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+/**
+ * 采用单例模式的记事本文件管理面板
+ * <p>
+ * 显示文件管理中每个文件的信息
+ * 
+ * @author Aintme
+ * @version 1.0
+ * @see ContentPanel
+ */
 public class FileManager extends JPanel {
 
 	/**
-	 * 
+	 * FileManager 类版本的标识符
 	 */
 	private static final long serialVersionUID = -6126239214991271975L;
+	/**
+	 * 文件管理信息的序列化文件存储相对路径
+	 */
 	private static final String FILEINFOSPATH = "./data/fileinfos";
-
+	/**
+	 * 记事本文件管理面板单例
+	 */
 	private static FileManager instance = null;
+	/**
+	 * 文件管理中所有文件的信息
+	 */
 	private List<FileInfo> fileInfos;
+	/**
+	 * 显示所有文件信息的容器
+	 */
 	private JList<ContentPanel> contentList;
+	/**
+	 * contentList 的管理模型
+	 */
 	private DefaultListModel<ContentPanel> listModel;
+	/**
+	 * 文件管理中没有文件时显示的默认容器
+	 */
 	private Box defaultBox;
+	/**
+	 * 为文件信息添加的滚动条
+	 */
 	private JScrollPane scrollPane;
 
+	/**
+	 * 创建一个记事本文件管理面板实例
+	 * <p>
+	 * 创建一个记事本文件管理面板实例，同时会尝试从指定路径获取文件管理，如果获取失败会创建一个空白的文件管理
+	 */
 	@SuppressWarnings("unchecked")
 	private FileManager() {
 		// 反序列化获取笔记列表
@@ -61,6 +95,7 @@ public class FileManager extends JPanel {
 		} else {
 			fileInfos = new ArrayList<FileInfo>();
 		}
+		// 文件管理中没有文件时的默认显示
 		JLabel defaultLabel1 = new JLabel("当前没有笔记文件");
 		defaultLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		defaultLabel1.setForeground(Color.GRAY);
@@ -70,11 +105,9 @@ public class FileManager extends JPanel {
 		defaultLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		defaultLabel2.setForeground(Color.GRAY);
 		defaultBox.add(defaultLabel2, Box.CENTER_ALIGNMENT);
+		// 配置文件显示容器
 		listModel = new DefaultListModel<>();
 		contentList = new JList<>(listModel) {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1409344193049405990L;
 
 			@Override
@@ -88,9 +121,6 @@ public class FileManager extends JPanel {
 			}
 		};
 		contentList.setCellRenderer(new DefaultListCellRenderer() {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = -6290993242483926649L;
 
 			@Override
@@ -122,14 +152,10 @@ public class FileManager extends JPanel {
 		});
 		scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-//		scrollPane.setViewportView(contentList); // 将 contentBox 设置为视口的显示区域
 		setLayout(new BorderLayout());
 		updateContent();
 		add(scrollPane, BorderLayout.CENTER);
 
-//		Box buttonBox = Box.createHorizontalBox();
-//		buttonBox.add(Box.createHorizontalGlue());
-//		buttonPanel.setLayout(new BorderLayout());
 		// 新增按钮
 		JButton newButton = new JButton("新建笔记");
 		newButton.addActionListener(new ActionListener() {
@@ -139,8 +165,6 @@ public class FileManager extends JPanel {
 				NotepadPanel.getInstance().showEditor();
 			}
 		});
-//		buttonBox.add(newButton);
-//		buttonBox.add(Box.createHorizontalGlue());
 		// 导入按钮
 		JButton importButton = new JButton("导入笔记");
 		importButton.addActionListener(new ActionListener() {
@@ -153,9 +177,6 @@ public class FileManager extends JPanel {
 				}
 			}
 		});
-//		buttonBox.add(importButton);
-//		buttonBox.add(Box.createHorizontalGlue());
-//		add(buttonBox, BorderLayout.SOUTH);
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(newButton);
 		buttonPanel.add(importButton);
@@ -163,6 +184,11 @@ public class FileManager extends JPanel {
 		setVisible(true);
 	}
 
+	/**
+	 * 更新显示文件信息的容器
+	 * <p>
+	 * 更新显示文件信息的容器，同时会序列化保存文件管理信息
+	 */
 	public void updateContent() {
 		if (fileInfos.isEmpty()) { // 如果不存在文件
 			scrollPane.setViewportView(defaultBox);
@@ -187,17 +213,30 @@ public class FileManager extends JPanel {
 		repaint();
 	}
 
+	/**
+	 * 获取唯一的记事本文件管理面板实例
+	 * 
+	 * @return 唯一的记事本文件管理面板实例
+	 */
 	public static FileManager getInstance() {
-		if (instance == null) {
+		if (instance == null) { // "懒汉"加载
 			instance = new FileManager();
 		}
 		return instance;
 	}
 
+	/**
+	 * 往文件管理中添加文件信息
+	 * 
+	 * @param fileInfo 需要添加的文件信息
+	 */
 	public void addFileInfo(FileInfo fileInfo) {
 		fileInfos.add(fileInfo);
 	}
 
+	/**
+	 * 序列化保存文件管理信息
+	 */
 	public void saveFileInfos() {
 		File file = new File(FILEINFOSPATH);
 		try {
@@ -211,6 +250,14 @@ public class FileManager extends JPanel {
 		}
 	}
 
+	/**
+	 * 在文件管理中查找指定文件的文件信息
+	 * <p>
+	 * 在文件管理中查找指定文件的文件信息，如果要查找的文件的文件信息不在文件管理中则返回NULL
+	 * 
+	 * @param file 需要查找的文件
+	 * @return 查找的文件信息，如果要查找的文件的文件信息不在文件管理中则返回NULL
+	 */
 	public FileInfo findFileInfo(File file) {
 		for (FileInfo fileInfo : fileInfos) {
 			if (fileInfo.infoOfFile(file)) {
@@ -220,16 +267,33 @@ public class FileManager extends JPanel {
 		return null;
 	}
 
-	public void deleteFileInfo(FileInfo fileinfo) {
-		fileInfos.remove(fileinfo);
-		fileinfo.delete();
-		updateContent();
+	/**
+	 * 从文件管理中删除指定的文件信息
+	 * 
+	 * @param fileInfo 需要删除的文件信息
+	 */
+	public void deleteFileInfo(FileInfo fileInfo) {
+		if (fileInfo != null) {
+			fileInfos.remove(fileInfo);
+			fileInfo.delete();
+			updateContent();
+		}
 	}
 
+	/**
+	 * 从文件管理中删除指定的文件的文件信息
+	 * 
+	 * @param file 需要删除文件信息的指定文件
+	 */
 	public void deleteFileInfo(File file) {
 		deleteFileInfo(findFileInfo(file));
 	}
 
+	/**
+	 * 导入现有文件的文件信息
+	 * 
+	 * @param file 需要导入文件信息的文件
+	 */
 	public void importFile(File file) {
 		if (FileManager.getInstance().findFileInfo(file) == null) {
 			addFileInfo(new FileInfo(file));

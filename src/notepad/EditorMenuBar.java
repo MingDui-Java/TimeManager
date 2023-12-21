@@ -24,80 +24,128 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+/**
+ * 采用单例模式的记事本编辑菜单栏
+ * 
+ * @author Aintme
+ * @version 1.0
+ */
 public class EditorMenuBar extends JMenuBar {
 
 	/**
-	 * 
+	 * EditorMenuBar类版本的标识符
 	 */
 	private static final long serialVersionUID = -3393661883314287039L;
-
+	/**
+	 * 记事本编辑菜单栏单例
+	 */
 	private static EditorMenuBar instance = null;
+	/**
+	 * 右键单击菜单栏
+	 */
 	private JPopupMenu popupMenu = new JPopupMenu();
+	/**
+	 * 是否开启文本自动换行的标志位
+	 */
 	private boolean wrapped;
+	/**
+	 * 颜色设置窗体
+	 */
 	private JDialog colorDialog = null;
+	/**
+	 * 显示背景颜色的纯色标签
+	 */
 	private ColoredRectangleLabel backgroundColorLabel = null;
+	/**
+	 * 显示字体颜色的纯色标签
+	 */
 	private ColoredRectangleLabel foregroundColorLabel = null;
+	/**
+	 * 程序主窗体，用于显示颜色设置窗体
+	 */
 	private JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
-	@SuppressWarnings("serial")
+	/**
+	 * 创建一个记事本编辑菜单栏实例
+	 */
 	private EditorMenuBar() {
 		wrapped = FormatSetting.getInstance().getWrapped();
-		// 独立action便于共享
+		// 菜单栏和右键菜单共享的action
 		AbstractAction saveAction = new AbstractAction() {
+			private static final long serialVersionUID = 2402574325660633126L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().saveFile();
 			}
 		};
 		AbstractAction exitAction = new AbstractAction() {
+			private static final long serialVersionUID = -4341574190339003938L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().closeFile();
 			}
 		};
 		AbstractAction undoAction = new AbstractAction() {
+			private static final long serialVersionUID = -3616496559494939846L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().undo();
 			}
 		};
 		AbstractAction redoAction = new AbstractAction() {
+			private static final long serialVersionUID = 9139963662385263502L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().redo();
 			}
 		};
 		AbstractAction cutAction = new AbstractAction() {
+			private static final long serialVersionUID = 5669912265714252198L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().cut();
 			}
 		};
 		AbstractAction copyAction = new AbstractAction() {
+			private static final long serialVersionUID = 971999228614062691L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().copy();
 			}
 		};
 		AbstractAction pasteAction = new AbstractAction() {
+			private static final long serialVersionUID = -33674576953639635L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().paste();
 			}
 		};
 		AbstractAction deleteAction = new AbstractAction() {
+			private static final long serialVersionUID = 3536417234833226565L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().delete();
 			}
 		};
 		AbstractAction selectAllAction = new AbstractAction() {
+			private static final long serialVersionUID = 1707735573479116814L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().selectAll();
 			}
 		};
 		AbstractAction findAction = new AbstractAction() {
+			private static final long serialVersionUID = -378201178793528739L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileEditor.getInstance().showFind();
@@ -228,19 +276,32 @@ public class EditorMenuBar extends JMenuBar {
 		popupMenu.add(copyFindItem);
 	}
 
+	/**
+	 * 获取唯一的记事本编辑菜单栏实例
+	 * 
+	 * @return 唯一的记事本编辑菜单栏实例
+	 */
 	public static EditorMenuBar getInstance() {
-		if (instance == null) {
+		if (instance == null) { // "懒汉"加载
 			instance = new EditorMenuBar();
 		}
 		return instance;
 	}
 
-	public void showPopupMenu(MouseEvent e) {
-		popupMenu.show(e.getComponent(), e.getX(), e.getY());
+	/**
+	 * 显示右键菜单
+	 * 
+	 * @param mouseEvent 右键单击时的鼠标事件，用于确定右键菜单的显示位置
+	 */
+	public void showPopupMenu(MouseEvent mouseEvent) {
+		popupMenu.show(mouseEvent.getComponent(), mouseEvent.getX(), mouseEvent.getY());
 	}
 
+	/**
+	 * 显示颜色设置窗体
+	 */
 	public void showColor() {
-		if (colorDialog == null) {
+		if (colorDialog == null) { // "懒汉"加载
 			colorDialog = new JDialog(parentFrame, "颜色", false);
 //			colorDialog.setAlwaysOnTop(true);
 			colorDialog.setLayout(new FlowLayout());
@@ -285,6 +346,9 @@ public class EditorMenuBar extends JMenuBar {
 		colorDialog.setVisible(true);
 	}
 
+	/**
+	 * 关闭操作，主要用于关闭打开的颜色设置窗体
+	 */
 	public void close() {
 		if (colorDialog != null) {
 			colorDialog.setVisible(false);

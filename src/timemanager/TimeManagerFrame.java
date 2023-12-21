@@ -12,7 +12,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
-import View.StatisticsPanel;
 import View.TaskPanel;
 import View.TomatoPanel;
 import Yang.CalendarPanel;
@@ -24,16 +23,38 @@ import reminder.page.Review;
 import skin.SkinChangePanel;
 import skin.SkinSetting;
 
+/**
+ * TimeManager 程序主窗体
+ * <p>
+ * 采用单例模式，包含日历，提醒事项，番茄钟，记事本，喝水提醒，更换主题六个主要功能模块
+ * 
+ * @author Aintme
+ * @version 1.0
+ * @see CalendarPanel
+ * @see Review
+ * @see TomatoPanel
+ * @see NotepadPanel
+ * @see DrinkWaterPanel
+ * @see SkinChangePanel
+ */
 public class TimeManagerFrame extends JFrame {
 
 	/**
-	 * 
+	 * TimeManagerFrame类版本的标识符
+	 */
+	private static final long serialVersionUID = 6653251764918939618L;
+	/**
+	 * 程序主窗体单例
 	 */
 	public static TimeManagerFrame instance;
-
-	private static final long serialVersionUID = 6653251764918939618L;
+	/**
+	 * 组织功能板块的标签面板
+	 */
 	private JTabbedPane jTabbedPane = null;
 
+	/**
+	 * 创建一个程序主窗体
+	 */
 	public TimeManagerFrame() {
 		super("TimeManager");
 		setLocation(400, 150);
@@ -46,7 +67,6 @@ public class TimeManagerFrame extends JFrame {
 				showNotepad();
 				FileEditor.getInstance().closeFile();
 				TaskPanel.saveTaskList();
-				StatisticsPanel.saveFocusTimeEntries();
 				dispose(); // 关闭窗口
 				System.exit(0);
 			}
@@ -67,24 +87,38 @@ public class TimeManagerFrame extends JFrame {
 		setVisible(true);
 	}
 
-	// 切换主页面显示的模块(静态方法)
+	/**
+	 * 显示日历板块
+	 */
 	static public void showCalendar() {
 		instance.jTabbedPane.setSelectedIndex(0);
 	}
 
+	/**
+	 * 显示提醒事项板块
+	 */
 	static public void showReminder() {
 		instance.jTabbedPane.setSelectedIndex(1);
 	}
 
+	/**
+	 * 显示番茄钟板块
+	 */
 	static public void showTomato() {
 		instance.jTabbedPane.setSelectedIndex(2);
 		TomatoPanel.stopTimer();
 	}
 
+	/**
+	 * 显示记事本板块
+	 */
 	static public void showNotepad() {
 		instance.jTabbedPane.setSelectedIndex(3);
 	}
 
+	/**
+	 * 统一初始化程序字体
+	 */
 	private static void InitGlobalFont(Font font) {
 		FontUIResource fontRes = new FontUIResource(font);
 		for (Enumeration<Object> keys = UIManager.getDefaults().keys(); keys.hasMoreElements();) {
@@ -96,6 +130,9 @@ public class TimeManagerFrame extends JFrame {
 		}
 	}
 
+	/**
+	 * 程序入口
+	 */
 	public static void main(String[] args) {
 		FileIOUtil.ckeckDir();
 		JFrame.setDefaultLookAndFeelDecorated(true);

@@ -21,23 +21,36 @@ import javax.swing.border.LineBorder;
 import reminder.page.Review;
 import timemanager.TimeManagerFrame;
 
+/**
+ * 显示文件信息的内容面板
+ * 
+ * @author Aintme
+ * @version 1.0
+ * @see FileInfo
+ */
 public class ContentPanel extends JPanel {
-
 	/**
-	 * 
+	 * ContentPanel类版本的标识符
 	 */
 	private static final long serialVersionUID = 3247059258782932988L;
-//	private static final GridBagConstraints gbc = new GridBagConstraints();
-//	static {
-//		gbc.fill = GridBagConstraints.HORIZONTAL; // 水平拉伸
-//		gbc.weightx = 1.0; // 使组件充满水平空间
-//	}
+	/**
+	 * 显示的文件信息
+	 */
 	private FileInfo fileInfo;
+	/**
+	 * 右键单击菜单
+	 */
 	private JPopupMenu popupMenu;
 
+	/**
+	 * 创建一个显示文件信息的内容面板
+	 * 
+	 * @param fileInfo 显示的文件信息
+	 */
 	public ContentPanel(FileInfo fileInfo) {
 		this.fileInfo = fileInfo;
 		setLayout(new BorderLayout());
+		// 设置右键菜单
 		popupMenu = new JPopupMenu();
 		JMenuItem deleteItem = new JMenuItem("删除");
 		deleteItem.addActionListener(new ActionListener() {
@@ -77,6 +90,7 @@ public class ContentPanel extends JPanel {
 			}
 		});
 		popupMenu.add(reminderItem);
+
 		JLabel nameLabel = new JLabel(fileInfo.getName());
 		JLabel modifyLabel = new JLabel("  最近的一次修改：" + fileInfo.getDate());
 		nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -89,6 +103,7 @@ public class ContentPanel extends JPanel {
 		add(panel, BorderLayout.CENTER);
 		add(Box.createHorizontalStrut(20), BorderLayout.WEST);
 		add(Box.createHorizontalStrut(20), BorderLayout.EAST);
+		// 固定面板大小
 		setPreferredSize(new Dimension(getPreferredSize().width, 40));
 		setMinimumSize(new Dimension(getPreferredSize().width, 40));
 		setMaximumSize(new Dimension(getPreferredSize().width, 40));
@@ -96,6 +111,11 @@ public class ContentPanel extends JPanel {
 		setVisible(true);
 	}
 
+	/**
+	 * 打开文件
+	 * <p>
+	 * 打开文件并跳转至文件编辑界面，如果文件不存在弹窗提醒用户并自动删除该文件信息
+	 */
 	public void openFile() {
 		File file = fileInfo.getFile();
 		if (file.exists()) {
@@ -107,7 +127,13 @@ public class ContentPanel extends JPanel {
 		}
 	}
 
-	public void showPopup(JList<ContentPanel> contentList, MouseEvent e) {
-		popupMenu.show(contentList, e.getX(), e.getY());
+	/**
+	 * 显示右键菜单
+	 * 
+	 * @param contentList 右键菜单的显示空间
+	 * @param mouseEvent  右键时的鼠标事件
+	 */
+	public void showPopup(JList<ContentPanel> contentList, MouseEvent mouseEvent) {
+		popupMenu.show(contentList, mouseEvent.getX(), mouseEvent.getY());
 	}
 }

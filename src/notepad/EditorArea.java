@@ -20,19 +20,56 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.undo.UndoManager;
 
+/**
+ * 记事本的文本编辑区域
+ * 
+ * @author Aintme
+ * @version 1.0
+ */
 public class EditorArea extends JTextArea {
-
 	/**
-	 * 
+	 * EditorArea类版本的标识符
 	 */
 	private static final long serialVersionUID = -6354421493441903496L;
+	/**
+	 * 存储记事本内容的文件的信息
+	 */
 	private FileInfo fileInfo = null;
+	/**
+	 * 记事本内容
+	 */
 	private String contentSaved;
+	/**
+	 * 撤销管理器
+	 */
 	private UndoManager undoManager = new UndoManager();
+	/**
+	 * 记录上一次查找的位置
+	 */
 	private int index;
+	/**
+	 * 程序主窗体，用于显示查找和替换弹窗体
+	 */
 	private JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+	/**
+	 * 查找和替换窗体
+	 */
 	private JDialog findDialog = null;
-	{
+
+	/**
+	 * 通过文件信息创建一个记事本编辑区域
+	 * 
+	 * @param fileInfo 文件信息，用于初始化内容和保存位置
+	 */
+	public EditorArea(FileInfo fileInfo) {
+		this.fileInfo = fileInfo;
+		setLineWrap(FormatSetting.getInstance().getWrapped());
+		setBackground(FormatSetting.getInstance().getBackgroundColor());
+		setForeground(FormatSetting.getInstance().getForegroundColor());
+		setFont(new Font("Diolag", 0, FormatSetting.getInstance().getFontSize()));
+		contentSaved = FileIOUtil.loadFromFile(fileInfo.getPath());
+		setText(contentSaved);
+		undoManager.discardAllEdits(); // 清空撤销栈(内设字符串不需要撤销)
 		setWrapStyleWord(true);
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -43,22 +80,12 @@ public class EditorArea extends JTextArea {
 			}
 		});
 		getDocument().addUndoableEditListener(undoManager);
-	}
-
-	// 打开已有的文件
-	public EditorArea(FileInfo fileInfo) {
-		this.fileInfo = fileInfo;
-		setLineWrap(FormatSetting.getInstance().getWrapped());
-		setBackground(FormatSetting.getInstance().getBackgroundColor());
-		setForeground(FormatSetting.getInstance().getForegroundColor());
-		setFont(new Font("Diolag", 0, FormatSetting.getInstance().getFontSize()));
-		contentSaved = FileIOUtil.loadFromFile(fileInfo.getPath());
-		setText(contentSaved);
-		undoManager.discardAllEdits(); // 清空撤销栈(内设字符串不需要撤销)
 		setVisible(true);
 	}
 
-	// 创建一个新的文件
+	/**
+	 * 创建一个新的记事本编辑区域
+	 */
 	public EditorArea() {
 		setLineWrap(FormatSetting.getInstance().getWrapped());
 		setBackground(FormatSetting.getInstance().getBackgroundColor());
@@ -66,10 +93,24 @@ public class EditorArea extends JTextArea {
 		setFont(new Font("Diolag", 0, FormatSetting.getInstance().getFontSize()));
 		contentSaved = ""; // 新建文件内容为空
 		setLineWrap(true);
+		setWrapStyleWord(true);
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
+					EditorMenuBar.getInstance().showPopupMenu(e);
+				}
+			}
+		});
+		getDocument().addUndoableEditListener(undoManager);
 		setVisible(true);
 	}
 
-	// 返回是否成功保存
+	/**
+	 * 尝试保存记事本编辑内容
+	 * 
+	 * @return 是否成功保存编辑内容
+	 */
 	public boolean saveFile() {
 		if (fileInfo == null) { // 新建
 			File file = FileIOUtil.choosePath();
@@ -87,7 +128,7 @@ public class EditorArea extends JTextArea {
 					FileManager.getInstance().addFileInfo(fileInfo);
 					FileManager.getInstance().saveFileInfos();
 				}
-				contentSaved = getText(); // 保存更新内容
+				contentSaved = getText();
 				FileIOUtil.saveToFile(getText(), fileInfo.getPath());
 				return true;
 			}
@@ -95,12 +136,19 @@ public class EditorArea extends JTextArea {
 		} else {
 			fileInfo.update();
 			FileManager.getInstance().saveFileInfos();
-			contentSaved = getText(); // 保存更新内容
+			contentSaved = getText();
 			FileIOUtil.saveToFile(getText(), fileInfo.getPath());
 			return true;
 		}
 	}
 
+	/**
+	 * 尝试关闭记事本编辑区域
+	 * <p>
+	 * 尝试关闭记事本编辑区域，会自动关闭打开的查找窗体，如果文件没有保存会提醒用户保存
+	 * 
+	 * @return 是否成功关闭记事本编辑区域
+	 */
 	public boolean closeFile() {
 		if (findDialog != null) {
 			findDialog.setVisible(false);
@@ -115,21 +163,30 @@ public class EditorArea extends JTextArea {
 		return true;
 	}
 
+	/**
+	 * 撤销操作
+	 */
 	public void undo() {
 		if (undoManager.canUndo()) {
 			undoManager.undo();
 		}
 	}
 
+	/**
+	 * 重做操作
+	 */
 	public void redo() {
 		if (undoManager.canRedo()) {
 			undoManager.redo();
 		}
 	}
 
+	/**
+	 * 显示查找和替换窗体
+	 */
 	public void showFind() {
 		index = 0;
-		if (findDialog == null) {
+		if (findDialog == null) { // "懒汉"加载
 			findDialog = new JDialog(parentFrame, "查找/替换", false);
 			findDialog.setAlwaysOnTop(true);
 			findDialog.setLayout(new FlowLayout());
@@ -202,7 +259,13 @@ public class EditorArea extends JTextArea {
 		findDialog.setVisible(true);
 	}
 
-	// 返回是否找到了
+	/**
+	 * 查找文本编辑区域下一个指定字符串的位置
+	 * 
+	 * @param findText    需要查找的指定字符串
+	 * @param showNotFind 如果不存在下一个指定字符串是否需要显示提示窗体
+	 * @return 是否找到指定的字符串
+	 */
 	boolean find(String findText, boolean showNotFind) {
 		requestFocus();
 		String text = getText();
@@ -221,7 +284,11 @@ public class EditorArea extends JTextArea {
 		}
 	}
 
+	/**
+	 * 将文本编辑区域中指定的字符串替换成另一个字符串
+	 */
 	void replace(String findText, String replaceText) {
+		// 通过检测文本编辑区域中选中的字符串是否和指定的字符串相同指定替换操作是否生效
 		if (getSelectedText() != null && getSelectedText().equals(findText)) {
 			replaceSelection(replaceText);
 			index += replaceText.length() - findText.length(); // 修改index防止死循环
