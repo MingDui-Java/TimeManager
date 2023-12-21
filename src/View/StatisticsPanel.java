@@ -27,14 +27,28 @@ import Model.FocusTimeChartFactory;
 import Model.WeeklyFocusTimeChart;
 
 /**
- * @author 15252
+ * 数据统计面板
+ *
+ * @author Keith
+ * @version 1.0
  */
 public class StatisticsPanel extends JPanel implements FocusTimeObserver {
-
-	public List<FocusTimeEntry> focusTimeEntries = new ArrayList<>();
+	/**
+	 * 保存专注市场条目的容器
+	 */
+	public static List<FocusTimeEntry> focusTimeEntries = new ArrayList<>();
+	/**
+	 * 图表对应的Panel
+	 */
 	private ChartPanel chartPanel;
+	/**
+	 * 工厂模式
+	 */
 	private FocusTimeChartFactory chartFactory;
 
+	/**
+	 * 构造方法
+	 */
 	public StatisticsPanel() {
 		loadFocusTimeEntries();
 
@@ -65,7 +79,10 @@ public class StatisticsPanel extends JPanel implements FocusTimeObserver {
 		add(exportButton, BorderLayout.SOUTH);
 	}
 
-	// 创建日期范围选择下拉框
+	/**
+	 * 	创建日期范围选择下拉框
+	 * @return 返回下拉框
+	 */
 	private JComboBox<String> createDateRangeComboBox() {
 		JComboBox<String> comboBox = new JComboBox<>();
 		comboBox.addItem("今日");
@@ -87,13 +104,18 @@ public class StatisticsPanel extends JPanel implements FocusTimeObserver {
 		return comboBox;
 	}
 
-	// 更新图表数据
+	/**
+	 * 更新图表数据
+	 */
 	public void updateChart() {
 		JFreeChart chart = createChart();
 		chartPanel.setChart(chart);
 	}
 
-	// 更新数据
+	/**
+	 * 更新数据
+	 * @param focusTimeEntry 专注时间条目
+	 */
 	public void updateFocusTime(FocusTimeEntry focusTimeEntry) {
 		for (FocusTimeEntry entry : focusTimeEntries) {
 			if (entry.getTitle().equals(focusTimeEntry.getTitle())
@@ -106,17 +128,25 @@ public class StatisticsPanel extends JPanel implements FocusTimeObserver {
 		saveFocusTimeEntries();
 	}
 
-	// 创建图表
+	/**
+	 * 创建图表
+	 * @return 返回生成的图表
+	 */
 	public JFreeChart createChart() {
 		return chartFactory.createChart(focusTimeEntries);
 	}
 
-	// 设置对应的工厂
+	/**
+	 * 设置对应的工厂
+	 * @param chartFactory 设置的工厂
+	 */
 	public void setChartFactory(FocusTimeChartFactory chartFactory) {
 		this.chartFactory = chartFactory;
 	}
 
-	// 弹出文件选择器并保存图表
+	/**
+	 * 弹出文件选择器并保存图表
+	 */
 	private void saveChart() {
 		JFreeChart chart = chartPanel.getChart();
 		if (chart != null) {
@@ -143,8 +173,10 @@ public class StatisticsPanel extends JPanel implements FocusTimeObserver {
 		}
 	}
 
-	// 保存序列化文件
-	private void saveFocusTimeEntries() {
+	/**
+	 * 保存序列化文件
+	 */
+	public static void saveFocusTimeEntries() {
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Data/focusTimeEntries.ser"))) {
 			oos.writeObject(focusTimeEntries);
 		} catch (IOException e) {
@@ -152,7 +184,9 @@ public class StatisticsPanel extends JPanel implements FocusTimeObserver {
 		}
 	}
 
-	// 加载序列化文件
+	/**
+	 * 加载序列化文件
+	 */
 	private void loadFocusTimeEntries() {
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Data/focusTimeEntries.ser"))) {
 			focusTimeEntries = (List<FocusTimeEntry>) ois.readObject();

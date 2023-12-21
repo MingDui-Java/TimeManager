@@ -30,12 +30,23 @@ import javax.swing.SpinnerNumberModel;
 import Model.TodoItem;
 
 /**
- * @author 15252
+ * 事项面板
+ *
+ * @author Keith
+ * @version 1.0
  */
 public class TaskPanel extends JPanel {
-
+	/**
+	 * 持有总的TomatoPanel
+	 */
 	private TomatoPanel mainframe;
+	/**
+	 * 装载TodoItem专注事项的容器
+	 */
 	public static DefaultListModel<TodoItem> taskModel = new DefaultListModel<>();
+	/**
+	 * 负责渲染的JList
+	 */
 	public JList<TodoItem> taskList = new JList<>(taskModel) {
 		@Override
 		public int locationToIndex(Point location) {
@@ -47,9 +58,19 @@ public class TaskPanel extends JPanel {
 			}
 		}
 	};
+	/**
+	 * 添加事项按钮
+	 */
 	private JButton addButton = new JButton("添加事项");
+	/**
+	 * 删除事项按钮
+	 */
 	private JButton deleteButton = new JButton("删除事项");
 
+	/**
+	 * 构造函数
+	 * @param tomatoPanel 大的Panel
+	 */
 	public TaskPanel(TomatoPanel tomatoPanel) {
 		this.mainframe = tomatoPanel;
 
@@ -156,17 +177,28 @@ public class TaskPanel extends JPanel {
 		});
 	}
 
-	// 显示计时器面板
+	/**
+	 * 显示计时器面板
+	 *
+	 * @param selectedItem 被选中的事项
+	 * @param index 事项对应的下标
+	 */
 	private void showTimerPanel(TodoItem selectedItem, int index) {
 		mainframe.startTimer(selectedItem, index);
 	}
 
-	// 移除已完成事项
+	/**
+	 * 移除已完成事项
+	 *
+	 * @param index 事项对应的下标
+	 */
 	public void removeCompletedTask(int index) {
 		taskModel.remove(index);
 	}
 
-	// 保存序列化文件
+	/**
+	 * 保存序列化文件
+	 */
 	public static void saveTaskList() {
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Data/tasks.ser"))) {
 			oos.writeObject(new ArrayList<TodoItem>(Collections.list(taskModel.elements())));
@@ -175,7 +207,9 @@ public class TaskPanel extends JPanel {
 		}
 	}
 
-	// 加载序列化文件
+	/**
+	 * 加载序列化文件
+	 */
 	private void loadTaskList() {
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Data/tasks.ser"))) {
 			List<TodoItem> list = (List<TodoItem>) ois.readObject();
@@ -185,9 +219,5 @@ public class TaskPanel extends JPanel {
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public DefaultListModel<TodoItem> getTaskModel() {
-		return taskModel;
 	}
 }

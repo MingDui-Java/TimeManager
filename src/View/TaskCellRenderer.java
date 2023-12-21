@@ -10,14 +10,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author 15252
+ * 事项单元格渲染
+ *
+ * @author Keith
+ * @version 1.0
  */
 public class TaskCellRenderer extends DefaultListCellRenderer {
-
+    /**
+     * 颜色、字体粗细的参数
+     */
     private static final int BORDER_THICKNESS = 2;
     private static final Color BORDER_COLOR = Color.GRAY;
     private static final Color SHADOW_COLOR = new Color(0, 0, 0, 50);
 
+    /**
+     *
+     * @param list The JList we're painting.
+     * @param value The value returned by list.getModel().getElementAt(index).
+     * @param index The cells index.
+     * @param isSelected True if the specified cell was selected.
+     * @param cellHasFocus True if the specified cell has the focus.
+     * @return
+     */
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);

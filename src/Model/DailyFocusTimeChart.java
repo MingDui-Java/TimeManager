@@ -22,14 +22,28 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import View.FocusTimeEntry;
 
 /**
- * @author 15252
+ * 每日专注时长图表
+ *
+ * @author Keith
+ * @version 1.0
  */
 public class DailyFocusTimeChart implements FocusTimeChartFactory {
 
-	// 柱状颜色
+	/**
+	 * 保存柱的颜色
+	 */
 	private static final Map<String, Color> colorMap = new HashMap<>();
+	/**
+	 * 生成随机数
+	 */
 	private static final Random rand = new Random();
 
+	/**
+	 * 创建图表
+	 *
+	 * @param focusTimeEntries 专注时长容器
+	 * @return 返回生成的图表
+	 */
 	@Override
 	public JFreeChart createChart(List<FocusTimeEntry> focusTimeEntries) {
 		// 创建数据集
@@ -93,6 +107,12 @@ public class DailyFocusTimeChart implements FocusTimeChartFactory {
 		return chart;
 	}
 
+	/**
+	 * 随机生成专注条目对应的颜色
+	 *
+	 * @param itemName 专注条目名称
+	 * @return 返回颜色
+	 */
 	private Color getColorForItem(String itemName) {
 		return colorMap.computeIfAbsent(itemName, k -> new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat()));
 	}

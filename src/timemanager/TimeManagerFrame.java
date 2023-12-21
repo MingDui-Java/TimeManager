@@ -12,6 +12,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
+import View.StatisticsPanel;
 import View.TaskPanel;
 import View.TomatoPanel;
 import Yang.CalendarPanel;
@@ -45,6 +46,7 @@ public class TimeManagerFrame extends JFrame {
 				showNotepad();
 				FileEditor.getInstance().closeFile();
 				TaskPanel.saveTaskList();
+				StatisticsPanel.saveFocusTimeEntries();
 				dispose(); // 关闭窗口
 				System.exit(0);
 			}

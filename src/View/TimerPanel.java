@@ -19,24 +19,53 @@ import javax.swing.Timer;
 import Model.TodoItem;
 
 /**
- * @author 15252
+ * 计时器面板
+ *
+ * @author Keith
+ * @version 1.0
  */
 public class TimerPanel extends JPanel {
-
+	/**
+	 * 持有总的tomatoPanel
+	 */
 	private TomatoPanel tomatoPanel;
+	/**
+	 * 计时器对应的事项
+	 */
 	private TodoItem todoItem;
+	/**
+	 * 计时器面板的时间、任务名
+	 */
 	private JLabel timeLabel;
+	private JLabel taskNameLabel;
+	/**
+	 * 计时器
+	 */
 	private Timer timer;
+	/**
+	 * 一些按钮
+	 */
 	private JButton startButton;
 	private JButton controlButton;
 	private JButton backButton;
+	/**
+	 * 进度条
+	 */
 	private JProgressBar progressBar;
-	private JLabel taskNameLabel;
-	private JLabel taskDescriptionLabel;
+	/**
+	 * 事项对应的下标、初始时间和剩余时间
+	 */
 	private int index;
 	private int originalTime;
 	private int remainingTime;
 
+	/**
+	 * 构造函数
+	 *
+	 * @param todoItem 事项
+	 * @param tomatoPanel 总的TomatoPanel
+	 * @param index 事项对应下标
+	 */
 	public TimerPanel(TodoItem todoItem, TomatoPanel tomatoPanel, int index) {
 		this.tomatoPanel = tomatoPanel;
 		this.todoItem = todoItem;
@@ -50,7 +79,9 @@ public class TimerPanel extends JPanel {
 		setupTimerPanel();
 	}
 
-	// 设置时间标签和计时器
+	/**
+	 * 设置时间标签和计时器
+	 */
 	private void setupTimerPanel() {
 		// 顶部面板
 		JPanel topPanel = new JPanel();
@@ -156,24 +187,36 @@ public class TimerPanel extends JPanel {
 		this.add(bottomPanel, BorderLayout.SOUTH);
 	}
 
-	// 格式化时间
+	/**
+	 * 格式化时间
+	 *
+	 * @param totalSeconds 总时长
+	 * @return 格式化后的时间
+	 */
 	private String formatTime(int totalSeconds) {
 		int minutes = totalSeconds / 60;
 		int seconds = totalSeconds % 60;
 		return String.format("%02d:%02d", minutes, seconds);
 	}
 
-	// 通知主面板切换事项面板
+	/**
+	 * 通知主面板切换事项面板
+	 */
 	private void showTasks() {
 		tomatoPanel.showTasks();
 	}
 
-	// 通知观察者
+	/**
+	 * 通知观察者
+	 */
 	private void notifyFocusTime() {
 		Double focusedTime = (originalTime - remainingTime) * 1.0 / 60;
 		tomatoPanel.notifyObservers(new FocusTimeEntry(todoItem.getTitle(), todoItem.getCreationDay(), focusedTime));
 	}
 
+	/**
+	 * 结束计时器
+	 */
 	public void stopTimer() {
 		timer.stop();
 		todoItem.setRemainingTime(remainingTime);
