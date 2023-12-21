@@ -25,6 +25,8 @@ public class FocusTimeEntry implements Serializable {
     private Double minutes;
 
     /**
+     * 构造函数
+     *
      * @param title   标题
      * @param date    日期
      * @param minutes     时间
@@ -36,20 +38,26 @@ public class FocusTimeEntry implements Serializable {
     }
 
     /**
-     * @return 返回标题
+     * 返回标题
+     *
+     * @return 标题
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * @return 返回日期
+     * 返回日期
+     *
+     * @return 日期
      */
     public LocalDate getDate() {
         return date;
     }
 
     /**
+     * 得到时间
+     *
      * @return 返回时间
      */
     public Double getMinutes() {

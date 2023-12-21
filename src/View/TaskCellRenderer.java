@@ -37,7 +37,7 @@ public class TaskCellRenderer extends DefaultListCellRenderer {
      * @param index The cells index.
      * @param isSelected True if the specified cell was selected.
      * @param cellHasFocus True if the specified cell has the focus.
-     * @return
+     * @return 单元格渲染器组件
      */
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -90,5 +90,12 @@ public class TaskCellRenderer extends DefaultListCellRenderer {
         }
 
         return this;
+    }
+
+    /**
+     * 构造函数
+     */
+    public TaskCellRenderer() {
+
     }
 }
