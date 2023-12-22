@@ -15,13 +15,22 @@ import Yang.ToDos;
 public class TodoItem implements Serializable {
 
 	/**
-	 * 待办事项的标题、创建时间、设定的专注时间
+	 * 待办事项的标题
 	 */
 	private String title;
 	// private String description;
+	/**
+	 * 待办事项的创建时间
+	 */
 	private LocalDate creationDay;
+	/**
+	 * 待办事项的剩余时间
+	 */
 	private int remainingTime;
-	/**实例*/
+
+	/**
+	 * 与日历交互的实例
+	 */
 	private ToDos todo = null;
 
 	/**

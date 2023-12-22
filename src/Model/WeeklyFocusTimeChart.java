@@ -23,6 +23,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import View.FocusTimeEntry;
 
 /**
+ * 本周专注时长图表
+ *
  * @author Keith
  * @version 1.0
  */
@@ -121,5 +123,12 @@ public class WeeklyFocusTimeChart implements FocusTimeChartFactory {
 	 */
 	private Color getColorForItem(String itemName) {
 		return colorMap.computeIfAbsent(itemName, k -> new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat()));
+	}
+
+	/**
+	 * 构造函数
+	 */
+	public WeeklyFocusTimeChart() {
+
 	}
 }

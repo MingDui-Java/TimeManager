@@ -116,4 +116,11 @@ public class DailyFocusTimeChart implements FocusTimeChartFactory {
 	private Color getColorForItem(String itemName) {
 		return colorMap.computeIfAbsent(itemName, k -> new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat()));
 	}
+
+	/**
+	 * 构造函数
+	 */
+	public DailyFocusTimeChart() {
+
+	}
 }
