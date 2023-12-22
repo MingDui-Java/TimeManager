@@ -14,6 +14,10 @@ import java.util.ArrayList;
  */
 public class GetTodoButtonPanel {
     /**
+     * 默认构造器
+     */
+    public GetTodoButtonPanel(){}
+    /**
      * 创建包含待办事项管理按钮的面板。
      *
      * @param listPanel 包含一个待办集中所有待办的面板

@@ -140,7 +140,9 @@ class AddButtonListener implements ActionListener, Serializable {
 			new Color(199,237,204),
 	};
 }
-// 处理开始按钮的类
+/**
+ * 处理开始按钮逻辑的类
+ */
 class StartButtonListener implements ActionListener, Serializable {
 	private JPanel buttonPanel;
 	private ToDoList toDoList;
@@ -213,7 +215,9 @@ class StartButtonListener implements ActionListener, Serializable {
 //			}
 //		}
 	}
-	//序列化
+//	/**
+//	 * 序列化
+//	 */
 //	private static void saveTaskList() {
 //		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./data/tasks.ser"))) {
 //			oos.writeObject(new ArrayList<TodoItem>(Collections.list(TaskPanel.taskModel.elements())));
@@ -222,12 +226,12 @@ class StartButtonListener implements ActionListener, Serializable {
 //		}
 //	}
 }
-// 处理完成按钮的类
+/**
+ * 处理完成按钮逻辑的类
+ */
 class FinishButtonListener implements ActionListener, Serializable {
 	private ToDos toDos;
-
 	/**
-	 *
 	 * @param toDos 将要完成的待办
 	 */
 	public FinishButtonListener(ToDos toDos) {
