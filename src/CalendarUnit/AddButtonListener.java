@@ -178,6 +178,8 @@ class StartButtonListener implements ActionListener, Serializable {
 	 */
 	private ToDoList toDoList;
 	/**
+	 * 开始按钮类的初始化函数
+	 *
 	 * @param buttonPanel 待办集的按钮面板
 	 * @param toDoList 该按钮面板对应的待办集
 	 */
@@ -266,6 +268,8 @@ class FinishButtonListener implements ActionListener, Serializable {
 	 */
 	private ToDos toDos;
 	/**
+	 * 完成按钮类的初始化函数
+	 *
 	 * @param toDos 将要完成的待办
 	 */
 	public FinishButtonListener(ToDos toDos) {
