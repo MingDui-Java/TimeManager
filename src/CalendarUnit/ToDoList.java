@@ -10,6 +10,7 @@ import java.util.ArrayList;
 /**
  * 存储待办集信息的类
  * @author 杨智方
+ * @version 1.0
  */
 public class ToDoList implements Serializable {
     /**

@@ -12,6 +12,7 @@ import java.io.Serializable;
  * DownButtonListener 类实现 ActionListener 接口，用于处理打开待办集中的待办的动作。
  * 当用户点击打开按钮时，该待办集所持有的所有待办都将被展示在日视图上
  * @author 杨智方
+ * @version 1.0
  */
 
 class DownButtonListener implements ActionListener, Serializable {

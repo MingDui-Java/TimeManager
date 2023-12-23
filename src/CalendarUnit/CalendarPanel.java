@@ -5,6 +5,8 @@ import java.awt.CardLayout;
 import javax.swing.*;
 /**
  * CalendarPanel 类用于显示日历和待办事项。它继承自 JPanel 类，采用单例模式设计，确保在应用程序中只存在一个日历面板实例。
+ * @author 杨智方
+ * @version 1.0
  */
 
 public class CalendarPanel extends JPanel {

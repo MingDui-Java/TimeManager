@@ -13,9 +13,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * DeleteButtonListener 类实现 ActionListener 接口，用于处理添加待办事项的动作。
- * 当用户点击删除按钮时，该待办集以及其持有的所有待办都将被删除
+ * DeleteButtonListener 类实现 ActionListener 接口，用于处理添加待办事项的动作，当用户点击删除按钮时，该待办集以及其持有的所有待办都将被删除。
  * @author 杨智方
+ * @version 1.0
  */
 class DeleteButtonListener implements ActionListener, Serializable {
 	private JPanel bigListPanel;

@@ -32,38 +32,7 @@ import timemanager.TimeManagerFrame;
  * 这个类代表日视图的面板，继承自 JPanel，并提供了添加待办事项集合的功能。通过按钮操作和用户输入，可以管理待办事项集合。
  *
  * @author 杨智方
- *
- *         <p>
- *         DayPanel 主要包含用于待办事项管理的功能，其中涉及 ToDoList 类的操作。可以参考
- *         {@link CalendarUnit.ToDoList} 获取有关待办事项列表的更多信息。
- *         </p>
- *
- *         <p>
- *         该类通过继承 JPanel，提供了管理待办事项的方法。用户可以添加、查看和删除待办事项集合。
- *         </p>
- *
- *         <p>
- *         该类中的方法允许用户添加新的待办事项集合、显示待办事项列表以及返回日历视图。可以参考
- *         {@link CalendarUnit.CalendarPanel} 获取更多关于日历视图的信息。
- *         </p>
- *
- *         <p>
- *         DayPanel 还提供了显示提示信息、创建待办事项集合以及将待办事项添加到列表中的功能。
- *         </p>
- *
- *         <p>
- *         可以通过调用 {@link #getList()} 方法来获取待办事项集合的列表。
- *         </p>
- *
- *         <p>
- *         该类中的构造方法 {@link #DayPanel()} 初始化了待办事项列表面板，为用户提供了添加和管理待办事项集合的功能。
- *         </p>
- *
- *         <p>
- *         DayPanel 类的方法中使用了 {@link CalendarUnit.CalendarPanel#showMonthPanel()}
- *         和 {@link CalendarUnit.CalendarPanel#saveTodoMap()} 方法，
- *         以实现待办事项列表的管理和保存。请参考这些方法获取更多关于日历面板的信息。
- *         </p>
+ * @version 1.0
  */
 public class DayPanel extends JPanel implements Serializable {
 	/**

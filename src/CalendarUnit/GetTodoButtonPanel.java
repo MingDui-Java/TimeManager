@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * GetTodoButtonPanel 类用于创建包含待办集中包含按钮的面板。
  * 这些按钮用于打开、收起、添加和删除待办事项列表。
  * @author 杨智方
+ * @version 1.0
  */
 public class GetTodoButtonPanel {
     /**

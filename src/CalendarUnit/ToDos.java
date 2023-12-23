@@ -8,6 +8,7 @@ import java.io.Serializable;
 /**
  * 存储待办信息的类
  * @author 杨智方
+ * @version 1.0
  */
 public class ToDos implements Serializable {
     /**

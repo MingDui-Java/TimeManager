@@ -9,9 +9,9 @@ import javax.swing.JPanel;
 import java.io.Serializable;
 
 /**
- * CloseButtonListener 类实现 ActionListener 接口，用于处理收起待办集中的待办的动作。
- * 当用户点击收起按钮时，该待办集所持有的所有待办都将不再被展示在日视图上。
+ * CloseButtonListener 类实现 ActionListener 接口，用于处理收起待办集中的待办的动作,当用户点击收起按钮时，该待办集所持有的所有待办都将不再被展示在日视图上。
  * @author 杨智方
+ * @version 1.0
  */
 class CloseButtonListener implements ActionListener, Serializable {
     private JPanel buttonPanel;

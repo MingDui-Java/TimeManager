@@ -26,6 +26,7 @@ import javax.swing.JPanel;
  * MonthPanel 类用于显示月视图，并提供了与每一天相关联的待办事项列表。
  *
  * @author 杨智方
+ * @version 1.0
  */
 public class MonthPanel extends JPanel implements Serializable {
 	/**

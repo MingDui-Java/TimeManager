@@ -34,6 +34,7 @@ import javax.swing.SpinnerNumberModel;
  * 同时，该类也包含了 StartButtonListener 和 FinishButtonListener 内部类。
  *
  * @author 杨智方
+ * @version 1.0
  */
 
 class AddButtonListener implements ActionListener, Serializable {

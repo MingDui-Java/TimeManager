@@ -8,6 +8,7 @@ import java.io.Serializable;
  * EachDay 类存储每一天的信息，将月视图上每一天的按钮和对应日视图信息连接起来。
  *
  * @author 杨智方
+ * @version 1.0
  */
 public class EachDay implements Serializable {
     /**
