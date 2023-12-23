@@ -294,7 +294,7 @@ public class ReviewTask implements Serializable {
 			public void actionPerformed(ActionEvent e) {
 				jf.setText("当前选择的提醒模式是：" + e.getActionCommand());
 				type = 2;
-				tf.addFocusListener(new JTextFieldHintListener(tf, "请输入提醒时间间隔(单位：天)"));
+				tf.addFocusListener(new JTextFieldHintListener(tf, "请输入提醒间隔(>1天)"));
 				mode.removeAll();
 				mode.repaint();
 				mode.add(jf);
@@ -344,6 +344,11 @@ public class ReviewTask implements Serializable {
 					intervalStr = tf.getText();
 					try {
 						interval = Integer.parseInt(intervalStr);
+						if(interval == 1) {
+							JOptionPane.showMessageDialog(new JPanel(), "提醒间隔请大于1天！", "输入警告", JOptionPane.WARNING_MESSAGE);
+							tf.setText("");
+							tf.revalidate();
+						}
 					} catch (NumberFormatException ignored) {
 						JOptionPane.showMessageDialog(new JPanel(), "请输入合法的数字！", "输入警告", JOptionPane.WARNING_MESSAGE);
 					}
