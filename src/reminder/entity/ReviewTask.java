@@ -157,7 +157,7 @@ public class ReviewTask implements Serializable {
 	 * 打卡<BR/>
 	 * 将该提醒事项的状态变为-1
 	 *
-	 * @serialData 更新REVIEW_TASK_LIST
+	 * @serialData 更新提醒事项列表
 	 * @throws RuntimeException 序列化中出现的异常
 	 */
 	public void clockIn() {
@@ -231,7 +231,7 @@ public class ReviewTask implements Serializable {
 	 *
 	 * @author DdddM
      * @return 添加提醒事项对应的面板
-	 * @serialData 更新REVIEW_TASK_LIST
+	 * @serialData 更新提醒事项列表
 	 * @throws RuntimeException 序列化中出现的异常
 	 */
 	public JPanel addReview() {
