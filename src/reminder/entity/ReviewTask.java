@@ -344,7 +344,7 @@ public class ReviewTask implements Serializable {
 					intervalStr = tf.getText();
 					try {
 						interval = Integer.parseInt(intervalStr);
-						if(interval == 1) {
+						if(interval <= 1) {
 							JOptionPane.showMessageDialog(new JPanel(), "提醒间隔请大于1天！", "输入警告", JOptionPane.WARNING_MESSAGE);
 							tf.setText("");
 							tf.revalidate();
@@ -364,6 +364,8 @@ public class ReviewTask implements Serializable {
 					if (type == 2) {
 						setProgress = 0;
 						progressNow = 0;
+						CalendarPanel.getInstance().receiveTodoFromTip(content, setDate.getYear(),
+								setDate.getMonthValue(), setDate.getDayOfMonth());
 					}
 					REVIEWTASK_LIST.add(this);
 					File f = new File("./data/review.ser");
