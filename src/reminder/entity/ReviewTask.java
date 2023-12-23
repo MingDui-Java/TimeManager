@@ -408,7 +408,7 @@ public class ReviewTask implements Serializable {
 	 * 更新提醒事项的信息
 	 *
 	 * @author DdddM
-	 * @serialData 更新REVIEW_TASK_LIST
+	 * @serialData 更新提醒事项列表
 	 * @throws RuntimeException 序列化中出现的异常
 	 */
 	public void update() {
@@ -487,7 +487,7 @@ public class ReviewTask implements Serializable {
 	 * 重置该提醒事项
 	 *
 	 * @author DdddM
-	 * @serialData 更新REVIEW_TASK_LIST
+	 * @serialData 更新提醒事项列表
 	 * @throws RuntimeException 序列化中出现的异常
 	 */
 	public void reset() {

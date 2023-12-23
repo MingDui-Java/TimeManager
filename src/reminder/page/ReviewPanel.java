@@ -91,11 +91,16 @@ public class ReviewPanel extends JPanel {
 	 *
 	 * @author DdddM
 	 * @return 整个提醒事项面板
+	 * @exception RuntimeException 反序列化时的异常
 	 */
-	public JPanel initialize() {
+	public JPanel initialize() throws Exception {
 		File f = new File("./data/review.ser");
 		if (f.exists()) {
-			ReviewTask.setReviewTaskList(new SerialOp<List<ReviewTask>>().dSer(f));
+			try {
+				ReviewTask.setReviewTaskList(new SerialOp<List<ReviewTask>>().dSer(f));
+			}catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
 		} else {
 			ReviewTask.setReviewTaskList(new ArrayList<>());
 		}
@@ -152,7 +157,7 @@ public class ReviewPanel extends JPanel {
 	 *
 	 * @author DdddM
 	 * @return 提醒事项总览的子面板
-	 * @serialData 更新REVIEW_TASK_LIST
+	 * @serialData 更新提醒事项列表
 	 * @throws RuntimeException 序列化中出现的异常
 	 */
 	JPanel listTask() {

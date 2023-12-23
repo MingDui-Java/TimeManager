@@ -130,7 +130,7 @@ public class DrinkWaterPanel extends JPanel {
 	 * @author DdddM
 	 * @return 整个喝水提醒面板
 	 *
-	 * @serialData 更新waterDrinkMap
+	 * @serialData 更新当日喝水记录
 	 * @throws RuntimeException 序列化中出现的异常
 	 */
 	public JPanel initialize() throws Exception {
@@ -330,7 +330,7 @@ public class DrinkWaterPanel extends JPanel {
 	/**
 	 * 开始计时
 	 *
-	 * @serialData 更新waterDrinkMap
+	 * @serialData 更新当日喝水记录
 	 * @throws RuntimeException 序列化中出现的异常
 	 */
 	private void onStart() {
@@ -382,7 +382,7 @@ public class DrinkWaterPanel extends JPanel {
 	/**
 	 * 随时间更新面板内容
 	 *
-	 * @serialData 更新waterDrinkMap
+	 * @serialData 更新当日喝水记录
 	 * @throws RuntimeException 序列化中出现的异常
 	 */
 	private void updateTime() throws Exception {
