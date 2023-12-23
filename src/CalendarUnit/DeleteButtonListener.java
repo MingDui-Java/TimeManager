@@ -18,8 +18,17 @@ import javax.swing.JPanel;
  * @version 1.0
  */
 class DeleteButtonListener implements ActionListener, Serializable {
+	/**
+	 * 包含待办集和其持有的待办的面板
+	 */
 	private JPanel bigListPanel;
+	/**
+	 * 最大的装在scrollPane里的面板
+	 */
 	private Box TodoListPanel;
+	/**
+	 * 待办集的集合
+	 */
 	private ArrayList<ToDoList> list;
 	/**
 	 * 实现删除按钮的功能

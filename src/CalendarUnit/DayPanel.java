@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import timemanager.TimeManagerFrame;
+//import timemanager.TimeManagerFrame;
 
 /**
  * 这个类代表日视图的面板，继承自 JPanel，并提供了添加待办事项集合的功能。通过按钮操作和用户输入，可以管理待办事项集合。
@@ -67,10 +67,6 @@ public class DayPanel extends JPanel implements Serializable {
 	/**
 	 * DayPanel 类的构造方法，初始化日视图面板。
 	 *
-	 * <p>
-	 * 构造方法设置了面板的布局，初始化了待办事项列表和提示面板，允许用户创建和管理待办事项集合。
-	 * </p>
-	 *
 	 * @see CalendarUnit.CalendarPanel#showMonthPanel()
 	 * @see CalendarUnit.CalendarPanel#saveTodoMap()
 	 */
@@ -104,7 +100,7 @@ public class DayPanel extends JPanel implements Serializable {
 							}
 						}
 						createTodoList(newName);
-						TimeManagerFrame.showTomato();
+//						TimeManagerFrame.showTomato();
 					}
 				}
 			}

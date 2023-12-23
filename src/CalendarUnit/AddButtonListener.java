@@ -38,12 +38,33 @@ import javax.swing.SpinnerNumberModel;
  */
 
 class AddButtonListener implements ActionListener, Serializable {
+	/**
+	 * 按钮面板
+	 */
 	private JPanel buttonPanel;
+	/**
+	 * 收起按钮
+	 */
 	private JButton closeButton;
+	/**
+	 * 打开按钮
+	 */
 	private JButton downButton;
+	/**
+	 * 包含待办集和其持有的待办的面板
+	 */
 	private JPanel bigListPanel;
+	/**
+	 * 包含一个待办集中所有待办的面板
+	 */
 	private JPanel listPanel;
+	/**
+	 * 最大的装在scrollPane里的面板
+	 */
 	private Box TodoListPanel;
+	/**
+	 * 该按钮面板对应的待办集
+	 */
 	private ToDoList toDoList;
 	/**
 	 * 构造函数用于初始化 AddButtonListener 类的实例。
@@ -129,7 +150,10 @@ class AddButtonListener implements ActionListener, Serializable {
 			}
 		}
 	}
-	// 预定义的颜色
+
+	/**
+	 * 预定义的颜色
+	 */
 	public static Color[] predefinedColors = {
 			new Color(72, 61, 139),
 			new Color(255, 192, 203),
@@ -145,10 +169,16 @@ class AddButtonListener implements ActionListener, Serializable {
  * 处理开始按钮逻辑的类
  */
 class StartButtonListener implements ActionListener, Serializable {
+	/**
+	 * 待办集的按钮面板
+	 */
 	private JPanel buttonPanel;
+	/**
+	 * 该按钮面板对应的待办集
+	 */
 	private ToDoList toDoList;
 	/**
-	 * @param buttonPanel   待办集的按钮面板
+	 * @param buttonPanel 待办集的按钮面板
 	 * @param toDoList 该按钮面板对应的待办集
 	 */
 	public StartButtonListener(JPanel buttonPanel, ToDoList toDoList) {
@@ -183,54 +213,57 @@ class StartButtonListener implements ActionListener, Serializable {
 		inputPanel.add(timeSpinner);
 
 		// 显示对话框并获取用户输入
-//		int result = JOptionPane.showConfirmDialog(null, inputPanel, "事项信息", JOptionPane.OK_CANCEL_OPTION);
-//		if (result == JOptionPane.OK_OPTION) {
-//			String title = titleField.getText();
-//			TodoItem newItem = null;
-//			int time = (Integer) timeSpinner.getValue();
-//			// 检测是否存在同名任务
-//			boolean isDuplicate = false;
-//			for (int i = 0; i < TaskPanel.taskModel.getSize(); i++) {
-//				TodoItem item = TaskPanel.taskModel.getElementAt(i);
-//				if (item != null && item.getTitle().equals(title)) {
-//					isDuplicate = true;
-//					break;
-//				}
-//			}
-//
-//			if (!isDuplicate) {
-//				for (ToDos toDoItem : todos) {// 寻找对应的JPanel
-//					if (toDoItem.getPanel() == selectedPanel) {
-//						newItem = new TodoItem(title, time, toDoItem);
-//						break;
-//					}
-//				}
-//
-//				// 将新创建的任务添加到模型中
-//				TaskPanel.taskModel.addElement(newItem);
-//				saveTaskList();
-//				TimeManagerFrame.showTomato();
-//			} else {
-//				// 弹出提示框
-//				JOptionPane.showMessageDialog(null, "不能新建同名任务", "错误", JOptionPane.ERROR_MESSAGE);
-//			}
-//		}
+		int result = JOptionPane.showConfirmDialog(null, inputPanel, "事项信息", JOptionPane.OK_CANCEL_OPTION);
+		if (result == JOptionPane.OK_OPTION) {
+			String title = titleField.getText();
+			TodoItem newItem = null;
+			int time = (Integer) timeSpinner.getValue();
+			// 检测是否存在同名任务
+			boolean isDuplicate = false;
+			for (int i = 0; i < TaskPanel.taskModel.getSize(); i++) {
+				TodoItem item = TaskPanel.taskModel.getElementAt(i);
+				if (item != null && item.getTitle().equals(title)) {
+					isDuplicate = true;
+					break;
+				}
+			}
+
+			if (!isDuplicate) {
+				for (ToDos toDoItem : todos) {// 寻找对应的JPanel
+					if (toDoItem.getPanel() == selectedPanel) {
+						newItem = new TodoItem(title, time, toDoItem);
+						break;
+					}
+				}
+
+				// 将新创建的任务添加到模型中
+				TaskPanel.taskModel.addElement(newItem);
+				saveTaskList();
+				TimeManagerFrame.showTomato();
+			} else {
+				// 弹出提示框
+				JOptionPane.showMessageDialog(null, "不能新建同名任务", "错误", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
-//	/**
-//	 * 序列化
-//	 */
-//	private static void saveTaskList() {
-//		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./data/tasks.ser"))) {
-//			oos.writeObject(new ArrayList<TodoItem>(Collections.list(TaskPanel.taskModel.elements())));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	/**
+	 * 序列化
+	 */
+	private static void saveTaskList() {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./data/tasks.ser"))) {
+			oos.writeObject(new ArrayList<TodoItem>(Collections.list(TaskPanel.taskModel.elements())));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
 /**
  * 处理完成按钮逻辑的类
  */
 class FinishButtonListener implements ActionListener, Serializable {
+	/**
+	 * 将要完成的待办
+	 */
 	private ToDos toDos;
 	/**
 	 * @param toDos 将要完成的待办

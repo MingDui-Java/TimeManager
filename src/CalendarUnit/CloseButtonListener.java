@@ -14,10 +14,25 @@ import java.io.Serializable;
  * @version 1.0
  */
 class CloseButtonListener implements ActionListener, Serializable {
+    /**
+     * 按钮面板
+     */
     private JPanel buttonPanel;
+    /**
+     * 收起按钮
+     */
     private JButton closeButton;
+    /**
+     * 打开按钮
+     */
     private JButton downButton;
+    /**
+     * 包含待办集和其持有的待办的面板
+     */
     private JPanel bigListPanel;
+    /**
+     * 包含一个待办集中所有待办的面板
+     */
     private JPanel listPanel;
     /**
      * 创建包含待办事项管理按钮的面板。

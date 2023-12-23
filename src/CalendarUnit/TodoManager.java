@@ -20,7 +20,11 @@ public class TodoManager {
      */
     public TodoManager(){}
 
-    private final String DATA_FOLDER = "data/calendar";// 数据存储路径
+    /**
+     * 数据存储路径
+     */
+
+    private final String DATA_FOLDER = "data/calendar";
     /**
      * 从文件反序列化待办事项到日历
      *
