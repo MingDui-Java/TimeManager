@@ -344,11 +344,6 @@ public class ReviewTask implements Serializable {
 					intervalStr = tf.getText();
 					try {
 						interval = Integer.parseInt(intervalStr);
-						if(interval <= 1) {
-							JOptionPane.showMessageDialog(new JPanel(), "提醒间隔请大于1天！", "输入警告", JOptionPane.WARNING_MESSAGE);
-							tf.setText("");
-							tf.revalidate();
-						}
 					} catch (NumberFormatException ignored) {
 						JOptionPane.showMessageDialog(new JPanel(), "请输入合法的数字！", "输入警告", JOptionPane.WARNING_MESSAGE);
 					}
@@ -382,7 +377,14 @@ public class ReviewTask implements Serializable {
 						throw new RuntimeException(ex);
 					}
 				} else {
-					JOptionPane.showMessageDialog(new JPanel(), "创建失败，信息不全", "创建失败", JOptionPane.WARNING_MESSAGE);
+					if(type == 2 && interval == 1) {
+						JOptionPane.showMessageDialog(new JPanel(), "提醒间隔请大于1天！", "输入警告", JOptionPane.WARNING_MESSAGE);
+						interval = 0;
+						tf.setText("");
+						tf.revalidate();
+					}else{
+						JOptionPane.showMessageDialog(new JPanel(), "创建失败，信息不全", "创建失败", JOptionPane.WARNING_MESSAGE);
+					}
 				}
 			}
 		});
@@ -404,7 +406,7 @@ public class ReviewTask implements Serializable {
 	 * @return 信息完整返回true，不完整返回false
 	 */
 	boolean check(ReviewTask taskJudge) {
-		return taskJudge.setDate != null && !"".equals(taskJudge.content) && (taskJudge.type == 1 || (taskJudge.type == 2 && taskJudge.interval > 0));
+		return taskJudge.setDate != null && !"".equals(taskJudge.content) && (taskJudge.type == 1 || (taskJudge.type == 2 && taskJudge.interval > 1));
 	}
 	/**
 	 * 更新提醒事项的信息
